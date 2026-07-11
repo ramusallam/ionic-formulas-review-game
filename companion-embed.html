@@ -1,0 +1,27 @@
+<!-- =====================================================================
+     IONIC FORMULAS REVIEW GAME — Companion embed block
+     Paste anywhere in the Companion (like a 2a / 3b link).
+     A clean launch button + an auto-generated QR. The access code
+     (ionic2b) keeps students out until it is game time.
+     ===================================================================== -->
+<div style="max-width:460px;margin:18px auto;padding:22px 24px;background:#FFFFFF;border:1px solid #DDD1C3;border-top:4px solid #6366F1;border-radius:16px;box-shadow:0 4px 18px rgba(28,25,23,0.08);font-family:'Inter',-apple-system,sans-serif;text-align:center;">
+  <div style="font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#6366F1;font-weight:700;margin-bottom:8px;">Cycle 2 &middot; Review Game</div>
+  <div style="font-family:'Roboto Serif',Georgia,serif;font-size:20px;font-weight:700;color:#1C1917;margin-bottom:4px;">Ionic Formulas Review Game</div>
+  <div style="font-size:13px;color:#57534E;line-height:1.5;margin-bottom:16px;">Three rounds of ionic bonds, the four moves, and polyatomic ions &mdash; with wildcard trivia breaks. Play in teams.</div>
+  <a href="https://ionic-formulas-review-game.vercel.app" target="_blank" rel="noopener"
+     style="display:inline-block;background:#6366F1;color:#fff;text-decoration:none;font-weight:700;font-size:15px;padding:13px 30px;border-radius:12px;">Launch the Review Game</a>
+  <div style="margin-top:18px;"><img id="ifrg-qr" alt="Scan to open the review game" width="132" height="132" style="border:1px solid #DDD1C3;border-radius:10px;padding:6px;background:#fff;image-rendering:pixelated;"></div>
+  <div style="font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#7C6F5A;margin-top:10px;">Locked until game day &middot; teacher provides the code</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+  (function(){
+    function draw(){
+      try{
+        var q=qrcode(0,'M'); q.addData('https://ionic-formulas-review-game.vercel.app'); q.make();
+        var img=document.getElementById('ifrg-qr'); if(img) img.src=q.createDataURL(6,4);
+      }catch(e){ setTimeout(draw,150); }
+    }
+    if(typeof qrcode==='undefined') setTimeout(draw,200); else draw();
+  })();
+</script>

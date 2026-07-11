@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ionic Formulas Review Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Roboto+Mono:wght@400;500;700&family=Roboto+Serif:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Canonical Spark / atomic-structure tokens */
+    --cream:#F0EBE3; --bg:#F7F3EE; --white:#FFFFFF; --ink:#1C1917; --warm:#57534E; --warm-muted:#7C6F5A;
+    --indigo:#6366F1; --indigo-2:#818CF8; --indigo-hover:#4F46E5; --indigo-soft:rgba(99,102,241,0.09); --indigo-line:rgba(99,102,241,0.30);
+    --amber:#B4791F; --amber-soft:#FBF3E2; --amber-line:#EBD9A8;
+    --green:#16A34A; --red:#EF4444;
+    --line:#DDD1C3; --line-soft:#F0EBE3;
+    --font-sans:'Inter',system-ui,-apple-system,sans-serif;
+    --font-serif:'Roboto Serif',Georgia,Cambria,serif;
+    --font-mono:'Roboto Mono',monospace;
+    --sh-sm:0 1px 2px rgba(17,17,17,0.05),0 2px 6px rgba(17,17,17,0.08);
+    --sh-md:0 4px 12px rgba(17,17,17,0.06),0 2px 4px rgba(17,17,17,0.04);
+    --sh-lg:0 16px 40px rgba(17,17,17,0.10),0 4px 12px rgba(17,17,17,0.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+  sub{font-size:0.7em} sup{font-size:0.7em}
+  .eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--indigo);font-weight:700}
+  .serif{font-family:var(--font-serif)}
+
+  /* ============ PASSWORD GATE ============ */
+  #gate{position:fixed;inset:0;z-index:100;background:linear-gradient(160deg,#2A2550 0%,#4F46E5 55%,#6366F1 100%);display:flex;align-items:center;justify-content:center;padding:24px}
+  #gate.hide{display:none}
+  #gate::before{content:'';position:absolute;inset:0;background:radial-gradient(circle,rgba(255,255,255,0.06) 1px,transparent 2px);background-size:38px 38px;pointer-events:none}
+  .gate-card{position:relative;background:var(--white);border-radius:20px;box-shadow:var(--sh-lg);padding:40px 36px;max-width:410px;width:100%;text-align:center}
+  .gate-badge{width:56px;height:56px;border-radius:16px;background:var(--indigo-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  .gate-badge svg{width:30px;height:30px;stroke:var(--indigo);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .gate-card h1{font-family:var(--font-serif);font-size:24px;font-weight:700;margin-bottom:6px}
+  .gate-card p{font-size:13.5px;color:var(--warm);margin-bottom:22px}
+  .gate-card input{width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:11px;font-family:var(--font-sans);font-size:15px;color:var(--ink);text-align:center;letter-spacing:0.04em}
+  .gate-card input:focus{outline:none;border-color:var(--indigo);box-shadow:0 0 0 3px var(--indigo-soft)}
+  .gate-card button{width:100%;margin-top:12px;padding:13px;border:none;border-radius:11px;background:var(--indigo);color:#fff;font-family:var(--font-sans);font-weight:700;font-size:15px;cursor:pointer;transition:background .15s}
+  .gate-card button:hover{background:var(--indigo-hover)}
+  .gate-err{color:var(--red);font-size:12.5px;font-weight:600;min-height:16px;margin-top:10px}
+
+  /* ============ VIEWS ============ */
+  .view{display:none} .view.active{display:block}
+
+  /* ============ MENU ============ */
+  .hero{background:linear-gradient(150deg,#4F46E5 0%,#6366F1 100%);color:#fff;padding:56px 30px 92px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.06) 1px,transparent 2px);background-size:40px 40px;pointer-events:none}
+  .hero .kicker{font-family:var(--font-mono);font-size:11px;letter-spacing:0.34em;text-transform:uppercase;opacity:0.9;font-weight:500;position:relative}
+  .hero h1{font-family:var(--font-serif);font-size:2.7rem;font-weight:700;letter-spacing:-0.5px;margin:10px 0 12px;position:relative;line-height:1.08}
+  .hero p{font-size:1rem;opacity:0.94;max-width:600px;margin:0 auto;position:relative}
+  .hero .badges{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:20px;position:relative}
+  .hero .badges span{background:rgba(255,255,255,0.18);padding:6px 13px;border-radius:20px;font-size:0.72rem;font-weight:600;letter-spacing:0.04em}
+
+  .wrap{max-width:1140px;margin:0 auto;padding:0 26px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:-56px;position:relative;z-index:2}
+  @media(max-width:860px){.cards{grid-template-columns:1fr}}
+  .sec-card{background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-md);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+  .sec-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg)}
+  .sec-card .top{padding:22px 22px 16px;border-top:4px solid var(--indigo)}
+  .sec-card .num{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:0.2em;color:var(--indigo)}
+  .sec-card h2{font-family:var(--font-serif);font-size:1.32rem;font-weight:700;margin:8px 0 5px;color:var(--ink)}
+  .sec-card .desc{font-size:0.86rem;color:var(--warm);min-height:38px}
+  .sec-card .foot{padding:0 22px 20px;margin-top:auto}
+  .sec-card .meta{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+  .sec-card .meta span{background:var(--indigo-soft);color:var(--indigo);padding:4px 10px;border-radius:9px;font-size:0.7rem;font-weight:700;font-family:var(--font-mono);letter-spacing:0.02em}
+  .sec-card .go{width:100%;padding:11px;border:none;border-radius:10px;background:var(--indigo);color:#fff;font-family:var(--font-sans);font-weight:700;font-size:0.92rem;cursor:pointer;transition:background .15s}
+  .sec-card .go:hover{background:var(--indigo-hover)}
+  .menu-note{text-align:center;color:var(--warm-muted);font-size:0.78rem;font-family:var(--font-mono);letter-spacing:0.04em;margin:26px 0 8px}
+
+  /* ============ SCOREBOARD ============ */
+  .score-mount{margin:24px 0}
+  .scoreboard{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh-md);overflow:hidden}
+  .sb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 16px 8px;border-bottom:1px solid var(--line-soft)}
+  .sb-title{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--warm-muted)}
+  .sb-title svg{width:14px;height:14px;stroke:var(--indigo);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .sb-tools{display:flex;gap:4px;align-items:center}
+  .sb-tools select,.sb-tools .reset{appearance:none;-webkit-appearance:none;background:transparent;border:none;color:var(--warm-muted);font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;padding:5px 8px;border-radius:7px;transition:background .15s,color .15s}
+  .sb-tools select:hover{background:var(--line-soft);color:var(--ink)}
+  .sb-tools .reset:hover{background:rgba(239,68,68,0.08);color:var(--red)}
+  .sb-teams{display:flex}
+  .team{flex:1;min-width:0;padding:15px 8px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;transition:background .25s}
+  .team+.team{border-left:1px solid var(--line-soft)}
+  .team::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--indigo),var(--indigo-2));opacity:0;transition:opacity .3s}
+  .team.leader::before{opacity:1}
+  .team.leader{background:linear-gradient(180deg,rgba(99,102,241,0.055),rgba(99,102,241,0) 72%)}
+  .team-lead-chip{position:absolute;top:9px;right:9px;font-family:var(--font-mono);font-size:8.5px;font-weight:700;letter-spacing:0.16em;color:var(--indigo);background:var(--indigo-soft);padding:2px 7px;border-radius:6px;opacity:0;transform:translateY(-2px);transition:opacity .25s,transform .25s;pointer-events:none}
+  .team.leader .team-lead-chip{opacity:1;transform:none}
+  .team-name{font-size:0.8rem;font-weight:600;background:transparent;border:none;color:var(--warm);text-align:center;width:100%;max-width:130px;padding:3px 4px;cursor:pointer;font-family:var(--font-sans);border-radius:6px;transition:background .15s}
+  .team-name:hover{background:var(--line-soft)}
+  .team-name:focus{background:var(--white);outline:none;cursor:text;color:var(--ink);box-shadow:0 0 0 2px var(--indigo-soft)}
+  .team-score{font-size:2.15rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;color:var(--ink);letter-spacing:-0.02em}
+  .team.leader .team-score{color:var(--indigo)}
+  .team-score.pop{animation:scorePop .35s ease-out}
+  @keyframes scorePop{40%{transform:scale(1.22)}}
+  .team-btns{display:flex;gap:7px;align-items:center;margin-top:2px}
+  .team-btns button{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:background .15s,border-color .15s,transform .1s}
+  .team-btns button:active{transform:scale(0.9)}
+  .team-btns svg{width:15px;height:15px;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .t-minus{background:transparent;border:1px solid var(--line)}
+  .t-minus svg{stroke:var(--warm-muted)}
+  .t-minus:hover{background:var(--line-soft);border-color:var(--warm-muted)}
+  .t-plus{background:var(--indigo-soft);border:1px solid transparent}
+  .t-plus svg{stroke:var(--indigo)}
+  .t-plus:hover{background:var(--indigo)}
+  .t-plus:hover svg{stroke:#fff}
+  @media(max-width:680px){
+    .team{padding:11px 4px 12px;gap:4px}
+    .team-score{font-size:1.55rem}
+    .team-btns button{width:26px;height:26px}
+    .team-btns svg{width:13px;height:13px}
+    .team-lead-chip{display:none}
+    .team-name{font-size:0.72rem}
+  }
+
+  /* ============ PLAY VIEW ============ */
+  .play-head{background:var(--white);border-bottom:1px solid var(--line);padding:14px 26px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+  .back{background:var(--cream);color:var(--indigo);border:1px solid var(--line);padding:8px 14px;border-radius:9px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:var(--font-sans);display:flex;align-items:center;gap:6px}
+  .back:hover{background:#efe9dd}
+  .play-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--ink)}
+  .play-title small{display:block;font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:var(--warm-muted);font-weight:500;margin-top:2px}
+  .counter{background:var(--indigo-soft);color:var(--indigo);padding:7px 14px;border-radius:20px;font-size:0.78rem;font-weight:700;font-family:var(--font-mono);letter-spacing:0.05em}
+
+  .stage{max-width:920px;margin:24px auto 60px;padding:0 26px}
+
+  /* timer */
+  .timer-row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:14px;font-size:0.8rem;color:var(--warm)}
+  .timer-row label{font-weight:600;font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-muted)}
+  .timer-row select,.timer-row button{padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-family:var(--font-sans);font-size:0.8rem;font-weight:600;background:var(--white);color:var(--warm);cursor:pointer}
+  .timer-bar{height:9px;background:var(--line-soft);border-radius:9px;overflow:hidden;margin-bottom:8px}
+  .timer-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--indigo),var(--indigo-2));transition:width .35s linear}
+  .timer-fill.warn{background:linear-gradient(90deg,#D6A02E,#E0B44A)}
+  .timer-fill.danger{background:linear-gradient(90deg,#D6603E,#C24A32);animation:pulse .8s infinite}
+  @keyframes pulse{50%{opacity:.55}}
+  .timer-num{text-align:center;font-family:var(--font-mono);font-size:2.1rem;font-weight:700;color:var(--indigo);font-variant-numeric:tabular-nums;margin-bottom:22px}
+  .timer-num.danger{color:var(--red)}
+
+  /* chem card */
+  .card{background:var(--white);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-md);padding:34px 34px 30px;margin-bottom:18px}
+  .q-badges{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+  .lvl{padding:5px 13px;border-radius:20px;font-size:0.68rem;font-weight:700;font-family:var(--font-mono);letter-spacing:0.1em}
+  .lvl.simple{background:var(--indigo-soft);color:var(--indigo)}
+  .lvl.challenge{background:#F3E7DE;color:#B4551F}
+  .skill-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm-muted);font-weight:600}
+  .q-text{font-family:var(--font-serif);font-size:1.42rem;font-weight:600;color:var(--ink);line-height:1.42}
+  .q-text.chem{font-size:1.34rem}
+  .whiteboard-hint{display:flex;align-items:center;gap:9px;margin-top:20px;padding:12px 15px;background:var(--cream);border-radius:11px;font-size:0.86rem;color:var(--warm)}
+  .whiteboard-hint svg{width:18px;height:18px;stroke:var(--indigo);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+  /* trivia */
+  .card.trivia{border-top:4px solid var(--amber);background:linear-gradient(180deg,#FFFDF8,var(--white))}
+  .trivia-cat{display:inline-block;background:var(--amber);color:#fff;padding:5px 14px;border-radius:16px;font-size:0.68rem;font-weight:700;font-family:var(--font-mono);letter-spacing:0.14em;margin-bottom:14px}
+  .brain-break{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--amber);font-weight:700;margin-bottom:6px;text-transform:uppercase}
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+  @media(max-width:640px){.choices{grid-template-columns:1fr}}
+  .choice{background:var(--cream);border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:13px;font-size:1.02rem;color:var(--ink);transition:all .18s}
+  .choice .ltr{width:34px;height:34px;border-radius:50%;background:var(--amber);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.95rem;flex-shrink:0;font-family:var(--font-mono)}
+  .choice.correct{background:#EEF6E9;border-color:var(--green)}
+  .choice.correct .ltr{background:var(--green)}
+  .choice.correct::after{content:'\2713';margin-left:auto;color:var(--green);font-weight:800;font-size:1.1rem}
+
+  /* reveal */
+  .reveal{background:var(--white);border:1px solid var(--line);border-left:5px solid var(--indigo);border-radius:14px;box-shadow:var(--sh-sm);padding:26px 28px;margin-bottom:18px;animation:fadeUp .35s ease-out}
+  .reveal.trivia-rev{border-left-color:var(--green)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .reveal-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .reveal-head .chk{width:28px;height:28px;border-radius:50%;background:var(--indigo);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+  .reveal.trivia-rev .chk{background:var(--green)}
+  .reveal-head h3{font-family:var(--font-serif);font-size:1.12rem;color:var(--ink)}
+  .sol{font-size:1rem;color:var(--ink);line-height:1.7}
+  .sol strong{color:var(--indigo);font-weight:700}
+  .reveal.trivia-rev .sol strong{color:var(--green)}
+  .visual{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin:6px 0 18px;padding:18px;background:var(--cream);border-radius:12px}
+  .visual svg{max-width:100%;height:auto}
+  .transfer-svg{width:460px}
+  .bohr-sym{font-family:var(--font-serif);font-weight:700;font-size:19px;fill:var(--indigo)}
+  .bohr-pn{font-family:var(--font-mono);font-size:9px;fill:var(--warm-muted)}
+
+  /* ion cards (the ion wall) */
+  .ion-cards{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .ion-card{background:var(--white);border:1px solid var(--indigo-line);border-radius:12px;padding:13px 18px 11px;text-align:center;min-width:96px;box-shadow:var(--sh-sm)}
+  .ion-card.anion{border-color:var(--amber-line)}
+  .ion-sym{font-family:var(--font-serif);font-size:1.5rem;font-weight:700;color:var(--indigo);line-height:1.1}
+  .ion-card.anion .ion-sym{color:var(--amber)}
+  .ion-tag{font-family:var(--font-mono);font-size:8.5px;font-weight:700;letter-spacing:0.16em;color:var(--warm-muted);margin-top:5px}
+
+  /* the four moves */
+  .moves{display:flex;flex-direction:column;gap:9px;margin:14px 0 12px}
+  .moves-title{font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--warm-muted);margin:12px 0 -2px}
+  .move{display:flex;gap:12px;align-items:baseline}
+  .move .m-lbl{flex-shrink:0;font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:0.12em;color:var(--indigo);background:var(--indigo-soft);padding:3px 9px;border-radius:6px;white-space:nowrap}
+  .move .m-body{font-size:0.97rem;line-height:1.55}
+  .formula-pill{display:inline-block;font-family:var(--font-serif);font-size:1.55rem;font-weight:700;color:var(--indigo);background:var(--indigo-soft);border:1px solid var(--indigo-line);border-radius:12px;padding:7px 22px;margin:4px 0 10px}
+
+  /* controls */
+  .controls{display:flex;gap:11px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+  .btn{padding:13px 26px;border:none;border-radius:11px;font-size:0.94rem;font-weight:700;cursor:pointer;font-family:var(--font-sans);transition:all .16s}
+  .btn-primary{background:var(--indigo);color:#fff;min-width:170px}
+  .btn-primary:hover{background:var(--indigo-hover);transform:translateY(-1px)}
+  .btn-ghost{background:var(--cream);color:var(--warm);border:1px solid var(--line)}
+  .btn-ghost:hover{background:#efe9dd}
+  .btn-reveal{background:#F3E7DE;color:#B4551F}
+  .btn-reveal:hover{background:#eeddce;transform:translateY(-1px)}
+
+  .app-foot{text-align:center;padding:26px 20px 40px;color:var(--warm-muted);font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.1em}
+</style>
+</head>
+<body>
+
+<!-- ============ PASSWORD GATE ============ -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-badge">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h1 class="serif">Ionic Formulas Review Game</h1>
+    <p>This game is locked until class. Enter the access code your teacher gives you to begin.</p>
+    <input id="gate-input" type="password" placeholder="Access code" autocomplete="off" spellcheck="false">
+    <button id="gate-btn">Unlock Game</button>
+    <div class="gate-err" id="gate-err"></div>
+  </div>
+</div>
+
+<!-- ============ MENU ============ -->
+<div id="menu-view" class="view active">
+  <div class="hero">
+    <div class="kicker">Cycle 2 &middot; Follows the Ionic Formulas App (2b)</div>
+    <h1>Ionic Formulas<br>Review Game</h1>
+    <p>Three rounds. Ten questions each. Chemistry and a wildcard brain-break, back to back. Work it out as a team before the reveal.</p>
+    <div class="badges">
+      <span>3 ROUNDS</span><span>10 QUESTIONS EACH</span><span>2:00 PER QUESTION</span><span>1&ndash;5 TEAMS</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="cards" id="section-cards"></div>
+    <div class="score-mount" id="score-menu"></div>
+    <div class="menu-note">Press F for fullscreen &middot; scores save on this device &middot; every other question is a wildcard trivia break</div>
+  </div>
+</div>
+
+<!-- ============ PLAY VIEW (reused for all 3 rounds) ============ -->
+<div id="play-view" class="view">
+  <div class="play-head">
+    <button class="back" onclick="goMenu()">&larr; Rounds</button>
+    <div class="play-title" id="play-title">Round<small id="play-sub">SKILL</small></div>
+    <div class="counter" id="counter">1 / 10</div>
+  </div>
+
+  <div class="wrap"><div class="score-mount" id="score-play"></div></div>
+
+  <div class="stage">
+    <div class="timer-row">
+      <label>Timer</label>
+      <select id="timer-len" onchange="resetTimer()">
+        <option value="60">1:00</option>
+        <option value="90">1:30</option>
+        <option value="120" selected>2:00</option>
+        <option value="150">2:30</option>
+        <option value="180">3:00</option>
+      </select>
+      <button id="pause-btn" onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Restart</button>
+    </div>
+    <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+    <div class="timer-num" id="timer-num">2:00</div>
+
+    <!-- question -->
+    <div id="q-stage"></div>
+    <div class="controls" id="q-controls"></div>
+
+    <!-- reveal -->
+    <div id="reveal-stage" style="display:none"></div>
+    <div class="controls" id="reveal-controls" style="display:none">
+      <button class="btn btn-ghost" onclick="backToQuestion()">&larr; Back</button>
+      <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<div class="app-foot">IONIC FORMULAS REVIEW GAME &middot; BONDS &middot; THE FOUR MOVES &middot; POLYATOMICS &middot; SPARK LEARNING</div>
+
+<script>
+/* =========================================================================
+   ACCESS GATE  (soft gate: keeps students out until game time)
+   To open the game to everyone: set GATE_ENABLED = false.
+   Code lives in PASSWORD; change it to rotate.
+   ========================================================================= */
+const GATE_ENABLED = true;
+const PASSWORD = 'ionic2b';
+const UNLOCK_KEY = 'ifrg-unlocked-v1';
+function isUnlocked(){ try{ return localStorage.getItem(UNLOCK_KEY)==='1'; }catch(e){ return false; } }
+function unlock(){
+  document.getElementById('gate').classList.add('hide');
+}
+// AudioContext must start from a user gesture — init on the first tap/key, not at load.
+['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, initAudio, {once:true}));
+if(!GATE_ENABLED || isUnlocked()) unlock();
+document.getElementById('gate-btn').addEventListener('click', tryUnlock);
+document.getElementById('gate-input').addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
+function tryUnlock(){
+  const v = document.getElementById('gate-input').value.trim();
+  if(v === PASSWORD){
+    try{ localStorage.setItem(UNLOCK_KEY,'1'); }catch(e){}
+    unlock();
+  } else {
+    document.getElementById('gate-err').textContent = 'That code is not right. Ask your teacher.';
+    document.getElementById('gate-input').select();
+  }
+}
+
+/* =========================================================================
+   AUDIO  (escalating ticks + end alarm so nobody rushes the clock)
+   ========================================================================= */
+let actx = null;
+function initAudio(){ if(!actx){ try{ actx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } }
+function tone(freq,dur,type,peak){
+  if(!actx) return;
+  const o=actx.createOscillator(), g=actx.createGain();
+  o.type=type; o.frequency.value=freq; o.connect(g); g.connect(actx.destination);
+  const t=actx.currentTime;
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(peak,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.start(t); o.stop(t+dur+0.03);
+}
+function playTick(s){
+  if(s>30) tone(1000,0.04,'sine',0.05);
+  else if(s>10) tone(720,0.09,'triangle',0.13);
+  else if(s>0){ tone(880,0.12,'square',0.16); setTimeout(()=>tone(1320,0.12,'square',0.16),130); }
+}
+function playAlarm(){
+  // insistent-but-not-harsh descending triple: time is up
+  tone(660,0.45,'sine',0.20);
+  setTimeout(()=>tone(523,0.5,'sine',0.20),220);
+  setTimeout(()=>tone(392,0.75,'sine',0.20),470);
+}
+
+/* =========================================================================
+   SVG + HTML RENDERERS  (electron transfer diagrams, the ion wall)
+   ========================================================================= */
+function miniBohr(cx,cy,spec,valAmber){
+  const {symbol,protons,neutrons,shells}=spec;
+  let s='';
+  shells.forEach((c,i)=>{ const r=32+i*19; s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--indigo-line)" stroke-width="1.2"/>`; });
+  s+=`<circle cx="${cx}" cy="${cy}" r="23" fill="var(--indigo-soft)" stroke="var(--indigo)" stroke-width="1.8"/>`;
+  s+=`<text x="${cx}" y="${cy-1}" text-anchor="middle" class="bohr-sym">${symbol}</text>`;
+  s+=`<text x="${cx}" y="${cy+13}" text-anchor="middle" class="bohr-pn">${protons}p &middot; ${neutrons}n</text>`;
+  shells.forEach((c,i)=>{
+    const r=32+i*19, outer=(i===shells.length-1);
+    for(let e=0;e<c;e++){
+      const ang=(-90 + e*(360/c))*Math.PI/180;
+      const x=cx+r*Math.cos(ang), y=cy+r*Math.sin(ang);
+      const fill=(valAmber&&outer)?'var(--amber)':'var(--indigo)';
+      s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.6" fill="${fill}"/>`;
+    }
+  });
+  return s;
+}
+function transferSVG(donor,acceptor,label){
+  // donor's valence electrons drawn amber: those are the ones on the move
+  let s=`<svg class="transfer-svg" viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg">`;
+  s+=miniBohr(130,145,donor,true);
+  s+=miniBohr(390,145,acceptor,false);
+  s+=`<path d="M168 62 C 220 14, 300 14, 352 62" fill="none" stroke="var(--amber)" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#tr-arrow)"/>`;
+  s+=`<text x="260" y="14" text-anchor="middle" font-family="var(--font-mono)" font-size="13" font-weight="700" fill="var(--amber)">${label}</text>`;
+  s+=`<defs><marker id="tr-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 Z" fill="var(--amber)"/></marker></defs>`;
+  return s+`</svg>`;
+}
+function ionCards(list){
+  return `<div class="ion-cards">`+list.map(c=>
+    `<div class="ion-card${c.anion?' anion':''}"><div class="ion-sym">${c.sym}</div><div class="ion-tag">${c.anion?'ANION':'CATION'}</div></div>`
+  ).join('')+`</div>`;
+}
+// the four moves of the method — labels match the Ionic Formulas app exactly
+function moves(m1,m2,m3,m4){
+  const L=['Move 1 &middot; Ions + charges','Move 2 &middot; Charge sizes','Move 3 &middot; LCM','Move 4 &middot; Counts'];
+  return `<div class="moves">`+[m1,m2,m3,m4].map((b,i)=>
+    `<div class="move"><span class="m-lbl">${L[i]}</span><span class="m-body">${b}</span></div>`
+  ).join('')+`</div>`;
+}
+function pill(f){ return `<div style="text-align:center"><span class="formula-pill">${f}</span></div>`; }
+
+/* =========================================================================
+   QUESTION DATA
+   Chem = open-response (work on whiteboards, then reveal the worked solution).
+   Trivia = multiple choice wildcard brain-break. They alternate chem/trivia.
+   ========================================================================= */
+const CHEM_S1 = [
+  { type:'chem', level:'Simple', skill:'Electron transfer & -ide naming',
+    q:`In the app's opening animation, a sodium atom handed its single outer electron to a chlorine atom. What charge did each atom end up with, and why is the compound called <b>sodium chloride</b> instead of "sodium chlorine"?`,
+    transfer:{donor:{symbol:'Na',protons:11,neutrons:12,shells:[2,8,1]},acceptor:{symbol:'Cl',protons:17,neutrons:18,shells:[2,8,7]},label:'1 e⁻'},
+    solution:`Sodium lost one electron, leaving it with 11 protons but only 10 electrons, so it became <strong>Na⁺</strong>, a cation. Chlorine gained that electron, giving it 17 protons and 18 electrons, so it became <strong>Cl⁻</strong>, an anion. The naming rule: the metal keeps its name (sodium), but the nonmetal changes its ending to <strong>-ide</strong>, so chlorine becomes chloride. That is why the compound is sodium chloride, NaCl, and never "sodium chlorine." The -ide ending is your signal that the nonmetal is now an ion inside a compound, not a free element.` },
+  { type:'chem', level:'Challenge', skill:'Why ionic compounds conduct',
+    q:`The app showed you two demonstrations side by side: a bulb wired through a beaker of salt, and a heart cell with K⁺ ions inside and outside its membrane. <b>(a)</b> Explain why the bulb lights only when the salt is <b>melted or dissolved</b>, never while it is solid. <b>(b)</b> Normally there is far more K⁺ inside heart cells than in the blood outside. Explain what happens to the heartbeat when aqueous KCl floods the blood, and why.`,
+    solution:`<strong>(a)</strong> Electric current is moving charge. In solid salt, the ions are locked in place in a rigid lattice, so even though charges are present, none of them can move, and the bulb stays dark. Melting or dissolving the salt frees the ions to drift, and <strong>free ions carry current</strong>, so the bulb lights.<br><strong>(b)</strong> The heartbeat depends on the imbalance itself: far more K⁺ inside each heart cell than outside. That gap is what lets each cell fire and then reset in rhythm. Flooding the blood with aqueous KCl piles K⁺ up on the outside, <strong>erasing the inside/outside gap</strong>. With no gap, the cells cannot reset, and the heart stops. The ions are not poisonous by themselves; it is destroying the balance that is deadly.` },
+  { type:'chem', level:'Simple', skill:'Cation, anion & the bond',
+    q:`In the compound <b>barium chloride</b>, which ion is the cation and which is the anion? What is the name of the attraction that holds them together, and what kind of compound does that make barium chloride?`,
+    ions:[{sym:'Ba²⁺'},{sym:'Cl⁻',anion:true}],
+    solution:`Barium is the metal, and it loses electrons to become <strong>Ba²⁺</strong>, a positive ion, so barium is the <strong>cation</strong>. Chloride is the nonmetal ion, <strong>Cl⁻</strong>, a negative ion, so it is the <strong>anion</strong>. The attraction between the positive and negative ions is the <strong>ionic bond</strong>, and a metal joined to a nonmetal by transferred electrons is an <strong>ionic compound</strong>.` },
+  { type:'chem', level:'Challenge', skill:'Bohr transfer & neutrality',
+    q:`Magnesium's shell arrangement is <b>2, 8, 2</b> and oxygen's is <b>2, 6</b>. Using the Bohr picture from the app, explain which atom loses electrons and which gains, how many electrons move, what charge each ion ends up with, and why the compound they form is neutral overall.`,
+    transfer:{donor:{symbol:'Mg',protons:12,neutrons:12,shells:[2,8,2]},acceptor:{symbol:'O',protons:8,neutrons:8,shells:[2,6]},label:'2 e⁻'},
+    solution:`Magnesium has 2 valence electrons sitting alone in its 3rd shell; losing 2 is far easier than gaining 6, so magnesium <strong>loses both</strong> and drops to the full arrangement 2, 8. Oxygen has 6 valence electrons and needs only 2 more to fill its 2nd shell, so oxygen <strong>gains the 2 electrons</strong> magnesium gave up, reaching 2, 8. Exactly <strong>2 electrons move</strong>. Magnesium now has 12 protons and 10 electrons: <strong>Mg²⁺</strong>. Oxygen now has 8 protons and 10 electrons: <strong>O²⁻</strong>. The 2+ and the 2&minus; are the same size, so one magnesium ion exactly cancels one oxide ion, and the compound <strong>MgO</strong> is neutral overall. That one-to-one cancellation is the Bohr-level reason magnesium oxide is MgO and not Mg₂O₂.` },
+  { type:'chem', level:'Simple', skill:'The ion wall',
+    q:`Write the symbol and charge for each of these ions from the app's ion wall: the <b>barium</b> ion, the <b>aluminum</b> ion, the <b>iodide</b> ion, and the <b>nitride</b> ion.`,
+    ions:[{sym:'Ba²⁺'},{sym:'Al³⁺'},{sym:'I⁻',anion:true},{sym:'N³⁻',anion:true}],
+    solution:`Barium ion: <strong>Ba²⁺</strong>. Aluminum ion: <strong>Al³⁺</strong>. Iodide ion: <strong>I⁻</strong>. Nitride ion: <strong>N³⁻</strong>. The metals lose electrons and are positive cations; the nonmetals gain electrons, take the -ide ending, and are negative anions.` },
+];
+const CHEM_S2 = [
+  { type:'chem', level:'Simple', skill:'The four moves',
+    q:`Use the four moves of the method (charges, charge sizes, LCM, counts) to write the formula for <b>barium chloride</b>. Show every move.`,
+    solution:moves(
+      `Ba²⁺ and Cl⁻.`,
+      `2 and 1 (drop the signs).`,
+      `LCM of 2 and 1 = <strong>2</strong>.`,
+      `Counts = LCM &divide; each size: Ba = 2 &divide; 2 = <strong>1</strong>; Cl = 2 &divide; 1 = <strong>2</strong>.`
+    )+pill(`BaCl₂`)+`One barium's 2+ is balanced by two chlorides' 1&minus; each.` },
+  { type:'chem', level:'Challenge', skill:'The equal-charge trap',
+    q:`A classmate criss-crosses the charges in <b>barium sulfide</b> and writes Ba₂S₂. Use the LCM method to find the correct formula, and explain why using the LCM (instead of criss-crossing or multiplying the charges) guarantees the formula comes out in lowest terms automatically.`,
+    solution:moves(
+      `Ba²⁺ and S²⁻.`,
+      `2 and 2.`,
+      `LCM of 2 and 2 = <strong>2</strong>, not 4. This is the whole trap.`,
+      `Ba = 2 &divide; 2 = <strong>1</strong>; S = 2 &divide; 2 = <strong>1</strong>.`
+    )+pill(`BaS`)+`Criss-crossing multiplies the charges together, so equal charges balloon into Ba₂S₂ and you have to remember to reduce. The <strong>LCM is, by definition, the smallest total charge both ions can reach</strong>, so dividing it by each charge size hands you the smallest whole-number counts. Lowest terms, automatically, with no reducing step to forget.` },
+  { type:'chem', level:'Simple', skill:'Reading Roman numerals',
+    q:`What exactly does the Roman numeral tell you in the name <b>manganese(II) chloride</b>? Write the formula.`,
+    solution:`The Roman numeral is <strong>the charge on the metal ion in this particular compound</strong>: manganese(II) means Mn²⁺. Transition metals can form more than one charge, so the name has to tell you which one you are holding.`+moves(
+      `Mn²⁺ and Cl⁻.`,
+      `2 and 1.`,
+      `LCM of 2 and 1 = <strong>2</strong>.`,
+      `Mn = 2 &divide; 2 = <strong>1</strong>; Cl = 2 &divide; 1 = <strong>2</strong>.`
+    )+pill(`MnCl₂`) },
+  { type:'chem', level:'Challenge', skill:'One metal, two oxides',
+    q:`Lead forms two different oxides: <b>lead(II) oxide</b> and <b>lead(IV) oxide</b>. Write both formulas, showing every move for each. Then explain why lead's name needs a Roman numeral but sodium's name in sodium chloride does not.`,
+    solution:`<div class="moves-title">Lead(II) oxide</div>`+moves(
+      `Pb²⁺ and O²⁻.`,
+      `2 and 2.`,
+      `LCM of 2 and 2 = <strong>2</strong>.`,
+      `Pb = 2 &divide; 2 = <strong>1</strong>; O = 2 &divide; 2 = <strong>1</strong>.`
+    )+pill(`PbO`)+`<div class="moves-title">Lead(IV) oxide</div>`+moves(
+      `Pb⁴⁺ and O²⁻.`,
+      `4 and 2.`,
+      `LCM of 4 and 2 = <strong>4</strong>.`,
+      `Pb = 4 &divide; 4 = <strong>1</strong>; O = 4 &divide; 2 = <strong>2</strong>.`
+    )+pill(`PbO₂`)+`Lead needs the numeral because it genuinely forms <strong>two different ions</strong>, and "lead oxide" alone would be ambiguous: PbO and PbO₂ are different compounds. Sodium only ever forms Na⁺, so "sodium chloride" can only mean one thing, and a numeral would add nothing.` },
+  { type:'chem', level:'Simple', skill:'Transition metal formulas',
+    q:`<b>Tin(II) fluoride</b> is the cavity-fighting ingredient in toothpaste. Write its formula, showing every move of the method.`,
+    solution:moves(
+      `Sn²⁺ (the (II) tells you) and F⁻.`,
+      `2 and 1.`,
+      `LCM of 2 and 1 = <strong>2</strong>.`,
+      `Sn = 2 &divide; 2 = <strong>1</strong>; F = 2 &divide; 1 = <strong>2</strong>.`
+    )+pill(`SnF₂`)+`One tin ion balanced by two fluorides. Check the toothpaste tube tonight: stannous fluoride is SnF₂.` },
+];
+const CHEM_S3 = [
+  { type:'chem', level:'Simple', skill:'Polyatomic ions',
+    q:`<b>Potassium permanganate</b> is the deep purple crystal used to disinfect water. Write its formula, showing every move, and explain why the polyatomic ion in it does NOT get parentheses.`,
+    solution:moves(
+      `K⁺ and the permanganate ion, MnO₄⁻.`,
+      `1 and 1.`,
+      `LCM of 1 and 1 = <strong>1</strong>.`,
+      `K = 1 &divide; 1 = <strong>1</strong>; MnO₄ = 1 &divide; 1 = <strong>1</strong>.`
+    )+pill(`KMnO₄`)+`Parentheses exist to show that a subscript multiplies a <strong>whole polyatomic group</strong>. You only need them when the count is 2 or more. Here there is exactly one permanganate, so parentheses would have nothing to do.` },
+  { type:'chem', level:'Challenge', skill:'The parentheses rule',
+    q:`Write the formulas for <b>potassium acetate</b> and <b>calcium acetate</b>, showing the moves for each. Both compounds contain the exact same polyatomic ion, but only one formula needs parentheses. Explain the rule that decides it.`,
+    solution:`<div class="moves-title">Potassium acetate</div>`+moves(
+      `K⁺ and acetate, C₂H₃O₂⁻.`,
+      `1 and 1.`,
+      `LCM = <strong>1</strong>.`,
+      `One of each.`
+    )+pill(`KC₂H₃O₂`)+`<div class="moves-title">Calcium acetate</div>`+moves(
+      `Ca²⁺ and acetate, C₂H₃O₂⁻.`,
+      `2 and 1.`,
+      `LCM of 2 and 1 = <strong>2</strong>.`,
+      `Ca = 2 &divide; 2 = <strong>1</strong>; acetate = 2 &divide; 1 = <strong>2</strong>.`
+    )+pill(`Ca(C₂H₃O₂)₂`)+`The rule: <strong>parentheses wrap a polyatomic ion only when you need more than one of it</strong>, so the subscript outside clearly multiplies the whole group instead of just the last atom. One acetate in KC₂H₃O₂ needs none; two acetates in calcium acetate must be wrapped.` },
+  { type:'chem', level:'Simple', skill:'The parentheses decision',
+    q:`<b>Aluminum hydroxide</b> is the active ingredient in many antacids. Write its formula, showing every move, including the parentheses decision.`,
+    solution:moves(
+      `Al³⁺ and hydroxide, OH⁻.`,
+      `3 and 1.`,
+      `LCM of 3 and 1 = <strong>3</strong>.`,
+      `Al = 3 &divide; 3 = <strong>1</strong>; OH = 3 &divide; 1 = <strong>3</strong>.`
+    )+pill(`Al(OH)₃`)+`Three hydroxides is more than one, so the group gets <strong>parentheses</strong>. Without them, AlOH₃ would wrongly read as one oxygen and three hydrogens instead of three whole OH groups.` },
+  { type:'chem', level:'Challenge', skill:'Everything at once',
+    q:`<b>Iron(III) sulfate</b> throws everything from this cycle at you at once: a transition metal, a polyatomic ion, and a parentheses decision. Write the formula, showing every move, run the neutrality check, and then explain which three separate skills from the app you just used in one problem.`,
+    solution:moves(
+      `The (III) tells you Fe³⁺; sulfate is SO₄²⁻.`,
+      `3 and 2.`,
+      `LCM of 3 and 2 = <strong>6</strong>.`,
+      `Fe = 6 &divide; 3 = <strong>2</strong>; SO₄ = 6 &divide; 2 = <strong>3</strong> &mdash; three sulfates, so parentheses are required.`
+    )+pill(`Fe₂(SO₄)₃`)+`<strong>Neutrality check:</strong> 2 &times; (3+) = 6+ and 3 &times; (2&minus;) = 6&minus;. They cancel exactly. The three skills stacked in this one problem: reading a <strong>Roman numeral</strong> as the metal's charge, treating a <strong>polyatomic ion</strong> as one sealed unit with its own charge, and making the <strong>parentheses decision</strong> once the count passed 1.` },
+  { type:'chem', level:'Simple', skill:'Spot the mistakes',
+    q:`A classmate writes <b>copper(II) sulfate</b> as Cu₂(SO₄)₂. Find both mistakes hiding in that formula and write the correct one.`,
+    solution:moves(
+      `Cu²⁺ (that is what the (II) says) and sulfate, SO₄²⁻.`,
+      `2 and 2.`,
+      `LCM of 2 and 2 = <strong>2</strong>, not 4.`,
+      `Cu = 2 &divide; 2 = <strong>1</strong>; SO₄ = 2 &divide; 2 = <strong>1</strong>.`
+    )+pill(`CuSO₄`)+`<strong>Mistake one:</strong> the classmate criss-crossed equal charges instead of taking the LCM, so both counts came out doubled &mdash; Cu₂(SO₄)₂ is not in lowest terms. <strong>Mistake two:</strong> once the sulfate count drops to 1, the parentheses have no job &mdash; they only appear when 2 or more of a polyatomic group are needed.` },
+];
+
+const TRIVIA_S1 = [
+  {type:'trivia',category:'POP CULTURE',q:`Fresh off sweeping five Grammys for "Not Like Us," who headlined the Super Bowl LIX halftime show in February 2025?`,choices:['Kendrick Lamar','Usher','Rihanna','Post Malone'],answer:0,explanation:`<strong>Kendrick Lamar</strong> headlined in New Orleans, with SZA as his guest. That same month "Not Like Us" won five Grammys, including both Record and Song of the Year.`},
+  {type:'trivia',category:'SPORTS',q:`The men's 100 m final at the 2024 Paris Olympics was the closest in Olympic history &mdash; gold decided by five thousandths of a second. Who won?`,choices:['Noah Lyles','Kishane Thompson','Fred Kerley','Marcell Jacobs'],answer:0,explanation:`<strong>Noah Lyles</strong> (USA) edged Jamaica's Kishane Thompson, 9.784 to 9.789 &mdash; so close the winner was only visible on the photo finish. It was the first US men's 100 m gold since 2004.`},
+  {type:'trivia',category:'INTERNET & SLANG',q:`Oxford's 2024 Word of the Year names the mental fog you get from scrolling endless low-quality content. What is the term?`,choices:['Brain rot','Doomscrolling','Slop','Demure'],answer:0,explanation:`<strong>Brain rot.</strong> The term is older than the internet: Henry David Thoreau used it in Walden in 1854 to complain that society undervalues complex ideas. "Demure" was among the finalists.`},
+  {type:'trivia',category:'MUSIC',q:`At the 2025 Grammys, Beyoncé finally won Album of the Year on her fifth nomination in the category. Which album did it?`,choices:['Cowboy Carter','Renaissance','Lemonade','4'],answer:0,explanation:`<strong>Cowboy Carter</strong>, her genre-flipping country album, which also won Best Country Album. The night pushed her career total to 35 Grammys &mdash; the most of any artist in history.`},
+  {type:'trivia',category:'FILM & TV',q:`The highest-grossing movie of 2024 worldwide was a Pixar sequel about emotions navigating the teenage years. Which film?`,choices:['Inside Out 2','Moana 2','Deadpool & Wolverine','Despicable Me 4'],answer:0,explanation:`<strong>Inside Out 2</strong> earned about $1.7 billion, Pixar's biggest film ever, powered by the new emotion Anxiety. Deadpool &amp; Wolverine finished second.`},
+];
+const TRIVIA_S2 = [
+  {type:'trivia',category:'WORLD HISTORY',q:`The Rosetta Stone, found in 1799, cracked an entire ancient writing system because one decree was carved on it in three scripts. Which system did it unlock?`,choices:['Egyptian hieroglyphs','Cuneiform','Linear B','Mayan glyphs'],answer:0,explanation:`<strong>Egyptian hieroglyphs.</strong> The same decree appears in hieroglyphs, Demotic, and ancient Greek &mdash; and since scholars could read the Greek, Champollion used it to decipher the hieroglyphs by 1822.`},
+  {type:'trivia',category:'US GOVERNMENT',q:`How many justices sit on the United States Supreme Court?`,choices:['Seven','Nine','Eleven','Thirteen'],answer:1,explanation:`<strong>Nine</strong> &mdash; one chief justice and eight associate justices. The Constitution never sets the number; Congress fixed it at nine in 1869 and it has not changed since.`},
+  {type:'trivia',category:'GEOGRAPHY',q:`As of 2024, which country has the largest population on Earth?`,choices:['China','India','United States','Indonesia'],answer:1,explanation:`<strong>India</strong>, at roughly 1.44 billion people, passed China in 2023 &mdash; the first change at the top in centuries. The United States is a distant third at about 340 million.`},
+  {type:'trivia',category:'WORLD EVENTS',q:`Notre-Dame cathedral in Paris triumphantly reopened in December 2024, five years after what closed it?`,choices:['A massive roof fire','An earthquake','A flood of the Seine','A structural collapse'],answer:0,explanation:`<strong>The April 2019 fire</strong> that destroyed its spire and medieval roof. Roughly 2,000 craftspeople and about &euro;700 million rebuilt it, using oak beams cut with medieval techniques.`},
+  {type:'trivia',category:'ECONOMICS',q:`When economists say a country is experiencing inflation, what exactly is happening?`,choices:['Prices are generally rising, so each dollar buys less','The stock market is falling','Unemployment is going up','The government is printing less money'],answer:0,explanation:`<strong>A general, sustained rise in prices</strong> that shrinks what each dollar buys. It is tracked with the Consumer Price Index, and central banks like the Federal Reserve aim to hold it near 2% a year.`},
+];
+const TRIVIA_S3 = [
+  {type:'trivia',category:'LITERATURE',q:`"To be, or not to be" opens the most famous soliloquy in English drama. Which Shakespeare play is it from?`,choices:['Macbeth','Hamlet','Romeo and Juliet','Othello'],answer:1,explanation:`<strong>Hamlet.</strong> The Prince of Denmark delivers it in Act 3, weighing existence itself. It is likely the most quoted passage in all of English literature.`},
+  {type:'trivia',category:'SCIENCE',q:`Roughly what fraction of the air you are breathing right now is nitrogen?`,choices:['About 21%','About 50%','About 78%','About 90%'],answer:2,explanation:`<strong>About 78%</strong> is nitrogen; only about 21% is the oxygen you actually use. N₂'s triple bond makes it so unreactive that it mostly just rides along in every breath.`},
+  {type:'trivia',category:'SPACE',q:`After a 2023 discovery haul of 62 new moons, which planet now has the most confirmed moons in our solar system?`,choices:['Jupiter','Saturn','Uranus','Neptune'],answer:1,explanation:`<strong>Saturn</strong>, with over 140 confirmed moons after the 2023 announcements pushed it past Jupiter. Most are tiny captured chunks only a few kilometers across.`},
+  {type:'trivia',category:'LIFE SKILLS',q:`Your credit score is a three-digit number lenders check before giving you a loan. What does it primarily measure?`,choices:['How much money you earn','How reliably you have repaid borrowed money','How much you keep in savings','How many bank accounts you have'],answer:1,explanation:`<strong>How reliably you repay what you borrow</strong> &mdash; payment history and amounts owed drive most of it. Your income and savings are not even part of the formula. Scores run 300 to 850.`},
+  {type:'trivia',category:'ART & CULTURE',q:`Swirling blues, a flame-like cypress tree, and a village under a wild night sky &mdash; painted from an asylum window in 1889. Name the painting and the artist.`,choices:['The Scream — Edvard Munch','The Starry Night — Vincent van Gogh','Impression, Sunrise — Claude Monet','Water Lilies — Claude Monet'],answer:1,explanation:`<strong>The Starry Night, by Vincent van Gogh</strong>, painted at the Saint-Rémy asylum in June 1889. He considered it a failed study; it has hung in New York's MoMA since 1941.`},
+];
+
+// interleave chem/trivia -> 10 items per round, starting with chem
+function interleave(chem,trivia){
+  const out=[]; for(let i=0;i<5;i++){ out.push(chem[i]); out.push(trivia[i]); } return out;
+}
+const SECTIONS = [
+  { title:'Round 1 · Give & Take', short:'IONIC BONDS · IONS', desc:'Electron transfer, cations and anions, and why ionic compounds behave the way they do.', items:interleave(CHEM_S1,TRIVIA_S1) },
+  { title:'Round 2 · Charges to Counts', short:'THE FOUR MOVES · ROMAN NUMERALS', desc:'The LCM method for binary formulas, plus transition metals that need a Roman numeral.', items:interleave(CHEM_S2,TRIVIA_S2) },
+  { title:'Round 3 · The Full Stack', short:'POLYATOMIC IONS · PARENTHESES', desc:'Polyatomic ions, the parentheses decision, and problems that use everything at once.', items:interleave(CHEM_S3,TRIVIA_S3) },
+];
+
+/* =========================================================================
+   SCOREBOARD
+   ========================================================================= */
+const SCORE_KEY='ifrg-scores-v1';
+function loadScores(){ try{ const s=localStorage.getItem(SCORE_KEY); if(s) return JSON.parse(s); }catch(e){} return {teams:[{name:'Team 1',score:0},{name:'Team 2',score:0},{name:'Team 3',score:0}]}; }
+function saveScores(){ try{ localStorage.setItem(SCORE_KEY,JSON.stringify(scoreState)); }catch(e){} }
+let scoreState=loadScores();
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+const SB_ICON_TROPHY='<svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>';
+const SB_ICON_PLUS='<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>';
+const SB_ICON_MINUS='<svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>';
+function scoreboardHTML(){
+  const max=Math.max(0,...scoreState.teams.map(t=>t.score));
+  let h='<div class="scoreboard"><div class="sb-top">';
+  h+='<div class="sb-title">'+SB_ICON_TROPHY+'Scoreboard</div>';
+  h+='<div class="sb-tools"><select onchange="setTeams(this.value)" title="Number of teams">';
+  for(let n=1;n<=5;n++) h+='<option value="'+n+'"'+(scoreState.teams.length===n?' selected':'')+'>'+n+(n===1?' team':' teams')+'</option>';
+  h+='</select><button class="reset" onclick="resetScores()">Reset</button></div></div>';
+  h+='<div class="sb-teams">';
+  scoreState.teams.forEach((t,i)=>{
+    const lead=t.score>0&&t.score===max;
+    h+='<div class="team'+(lead?' leader':'')+'">';
+    h+='<span class="team-lead-chip">LEAD</span>';
+    h+='<input class="team-name" value="'+esc(t.name)+'" onchange="renameTeam('+i+',this.value)" onfocus="this.select()">';
+    h+='<div class="team-score">'+t.score+'</div>';
+    h+='<div class="team-btns"><button class="t-minus" onclick="subPt('+i+')" aria-label="Subtract a point">'+SB_ICON_MINUS+'</button><button class="t-plus" onclick="addPt('+i+')" aria-label="Add a point">'+SB_ICON_PLUS+'</button></div>';
+    h+='</div>';
+  });
+  h+='</div></div>';
+  return h;
+}
+function renderScoreboards(){
+  const h=scoreboardHTML();
+  document.querySelectorAll('.score-mount').forEach(el=>{
+    const a=document.activeElement;
+    if(a&&el.contains(a)&&a.classList&&a.classList.contains('team-name')) return;
+    el.innerHTML=h;
+  });
+}
+function addPt(i){ scoreState.teams[i].score++; saveScores(); renderScoreboards(); bumpScore(i); }
+function subPt(i){ if(scoreState.teams[i].score<=0) return; scoreState.teams[i].score--; saveScores(); renderScoreboards(); bumpScore(i); }
+function bumpScore(i){ document.querySelectorAll('.score-mount').forEach(el=>{ const s=el.querySelectorAll('.team-score')[i]; if(s) s.classList.add('pop'); }); }
+function renameTeam(i,n){ scoreState.teams[i].name=(n||'').trim()||('Team '+(i+1)); saveScores(); renderScoreboards(); }
+function setTeams(n){ n=parseInt(n); while(scoreState.teams.length<n) scoreState.teams.push({name:'Team '+(scoreState.teams.length+1),score:0}); while(scoreState.teams.length>n) scoreState.teams.pop(); saveScores(); renderScoreboards(); }
+function resetScores(){ if(!confirm('Reset all team scores to zero? (Names stay.)')) return; scoreState.teams.forEach(t=>t.score=0); saveScores(); renderScoreboards(); }
+
+/* =========================================================================
+   NAVIGATION + PLAY FLOW
+   ========================================================================= */
+let curSection=0, curIndex=0;
+let curChoices=[], curAnswer=0;   // shuffled trivia choices for the item on screen
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function renderMenu(){
+  const c=document.getElementById('section-cards');
+  c.innerHTML=SECTIONS.map((s,i)=>`
+    <div class="sec-card" onclick="startSection(${i})">
+      <div class="top">
+        <div class="num">ROUND ${i+1}</div>
+        <h2>${s.title.split('·')[1].trim()}</h2>
+        <div class="desc">${s.desc}</div>
+      </div>
+      <div class="foot">
+        <div class="meta"><span>5 CHEM</span><span>5 WILDCARD</span><span>${s.short.split('·')[0].trim()}</span></div>
+        <button class="go">Start Round ${i+1}</button>
+      </div>
+    </div>`).join('');
+}
+function showView(id){ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); renderScoreboards(); }
+function goMenu(){ stopTimer(); showView('menu-view'); }
+function startSection(i){ curSection=i; curIndex=0; showView('play-view'); renderQuestion(); }
+
+function currentItem(){ return SECTIONS[curSection].items[curIndex]; }
+function renderQuestion(){
+  const s=SECTIONS[curSection], d=currentItem();
+  document.getElementById('play-title').firstChild.textContent=s.title.split('·')[1].trim()+' ';
+  document.getElementById('play-sub').textContent=s.short;
+  document.getElementById('counter').textContent=(curIndex+1)+' / 10';
+  document.getElementById('reveal-stage').style.display='none';
+  document.getElementById('reveal-controls').style.display='none';
+  const qs=document.getElementById('q-stage'), qc=document.getElementById('q-controls');
+  qs.style.display=''; qc.style.display='flex';
+
+  if(d.type==='chem'){
+    qs.innerHTML=`<div class="card">
+      <div class="q-badges"><span class="lvl ${d.level==='Simple'?'simple':'challenge'}">${d.level.toUpperCase()}</span><span class="skill-tag">${d.skill}</span></div>
+      <div class="q-text chem">${d.q}</div>
+      <div class="whiteboard-hint"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Work it out on your whiteboard as a team. Reveal when the clock runs out.</span></div>
+    </div>`;
+    qc.innerHTML=`<button class="btn btn-reveal" onclick="reveal()">Reveal the Answer</button>`;
+  } else {
+    // shuffle choices so the correct answer lands in a random A-D slot each time
+    const order = shuffle([0,1,2,3]);
+    curChoices = order.map(i=>d.choices[i]);
+    curAnswer = order.indexOf(d.answer);
+    qs.innerHTML=`<div class="card trivia">
+      <div class="brain-break">Wildcard · Brain Break</div>
+      <span class="trivia-cat">${d.category}</span>
+      <div class="q-text">${d.q}</div>
+      <div class="choices">${curChoices.map((c,i)=>`<div class="choice"><div class="ltr">${'ABCD'[i]}</div><div>${c}</div></div>`).join('')}</div>
+    </div>`;
+    qc.innerHTML=`<button class="btn btn-reveal" style="background:var(--amber);color:#fff" onclick="reveal()">Reveal the Answer</button>`;
+  }
+  resetTimer();
+}
+function reveal(){
+  stopTimer();
+  const d=currentItem();
+  const rs=document.getElementById('reveal-stage');
+  document.getElementById('q-controls').style.display='none';
+  if(d.type==='chem'){
+    let vis='';
+    if(d.transfer) vis=`<div class="visual">${transferSVG(d.transfer.donor,d.transfer.acceptor,d.transfer.label)}</div>`;
+    else if(d.ions) vis=`<div class="visual">${ionCards(d.ions)}</div>`;
+    rs.innerHTML=`<div class="reveal">
+      <div class="reveal-head"><div class="chk">&#10003;</div><h3>Worked Answer</h3></div>
+      ${vis}<div class="sol">${d.solution}</div></div>`;
+  } else {
+    const qs=document.getElementById('q-stage');
+    qs.querySelectorAll('.choice').forEach((c,i)=>{ if(i===curAnswer) c.classList.add('correct'); });
+    rs.innerHTML=`<div class="reveal trivia-rev">
+      <div class="reveal-head"><div class="chk">&#10003;</div><h3>${'ABCD'[curAnswer]} &mdash; ${curChoices[curAnswer]}</h3></div>
+      <div class="sol">${d.explanation}</div></div>`;
+  }
+  rs.style.display='';
+  const rc=document.getElementById('reveal-controls'); rc.style.display='flex';
+  document.getElementById('next-btn').textContent=(curIndex>=9)?'Finish Round →':'Next →';
+  rs.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function backToQuestion(){
+  document.getElementById('reveal-stage').style.display='none';
+  document.getElementById('reveal-controls').style.display='none';
+  document.getElementById('q-stage').style.display='';
+  document.getElementById('q-controls').style.display='flex';
+  // un-mark trivia choices
+  document.querySelectorAll('#q-stage .choice.correct').forEach(c=>c.classList.remove('correct'));
+  startTimer();
+}
+function nextQuestion(){ if(curIndex>=9){ goMenu(); return; } curIndex++; renderQuestion(); }
+
+/* =========================================================================
+   TIMER
+   ========================================================================= */
+let timer=null, remaining=120, paused=false, alarmed=false;
+function timerLen(){ return parseInt(document.getElementById('timer-len').value); }
+function stopTimer(){ if(timer){ clearInterval(timer); timer=null; } }
+function resetTimer(){ stopTimer(); remaining=timerLen(); alarmed=false; updateTimer(); startTimer(); }
+function startTimer(){
+  stopTimer(); paused=false; document.getElementById('pause-btn').textContent='Pause';
+  timer=setInterval(()=>{
+    if(paused) return;
+    remaining--;
+    updateTimer();
+    if(remaining>0) playTick(remaining);
+    if(remaining<=0){ stopTimer(); if(!alarmed){ alarmed=true; playAlarm(); } }
+  },1000);
+}
+function pauseTimer(){ paused=!paused; document.getElementById('pause-btn').textContent=paused?'Resume':'Pause'; }
+function updateTimer(){
+  const total=timerLen(), pct=Math.max(0,(remaining/total)*100);
+  const fill=document.getElementById('timer-fill'), num=document.getElementById('timer-num');
+  fill.style.width=pct+'%';
+  fill.classList.toggle('warn',pct<40&&pct>=15);
+  fill.classList.toggle('danger',pct<15);
+  num.classList.toggle('danger',pct<15);
+  const r=Math.max(0,remaining), m=Math.floor(r/60), s=r%60;
+  num.textContent=m+':'+(s<10?'0':'')+s;
+}
+
+/* =========================================================================
+   INIT
+   ========================================================================= */
+document.addEventListener('keydown',e=>{
+  if((e.key==='f'||e.key==='F') && document.getElementById('gate').classList.contains('hide')){
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen();
+  }
+});
+renderMenu();
+renderScoreboards();
+</script>
+</body>
+</html>

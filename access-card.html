@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ionic Formulas Review Game · Access Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Roboto+Mono:wght@400;500;700&family=Roboto+Serif:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+  :root{
+    --cream:#FAF7F2; --white:#FFFFFF; --ink:#1C1917; --warm:#57534E; --warm-muted:#7C6F5A;
+    --indigo:#6366F1; --indigo-soft:rgba(99,102,241,0.09); --line:#DDD1C3;
+    --font-sans:'Inter',-apple-system,sans-serif; --font-serif:'Roboto Serif',Georgia,serif; --font-mono:'Roboto Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--cream);color:var(--ink);font-family:var(--font-sans);-webkit-print-color-adjust:exact;print-color-adjust:exact;display:flex;justify-content:center;padding:26px 16px}
+  .card{background:var(--white);max-width:6.6in;width:100%;border:1px solid var(--line);border-radius:18px;box-shadow:0 4px 22px rgba(28,25,23,0.09);padding:0.5in 0.55in;text-align:center}
+  .eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--indigo);font-weight:700;margin-bottom:10px}
+  h1{font-family:var(--font-serif);font-size:27px;font-weight:700;line-height:1.12;margin-bottom:8px}
+  .sub{font-size:13px;color:var(--warm);max-width:4.6in;margin:0 auto 22px;line-height:1.5}
+  .qr-wrap{display:inline-flex;padding:16px;background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 10px rgba(28,25,23,0.06)}
+  .qr-wrap img{display:block;width:210px;height:210px;image-rendering:pixelated}
+  .url{font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--ink);margin:18px 0 4px;letter-spacing:0.01em;word-break:break-all}
+  .url-note{font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-muted)}
+  .btn{display:inline-block;margin-top:20px;background:var(--indigo);color:#fff;text-decoration:none;font-weight:700;font-size:15px;padding:13px 30px;border-radius:12px}
+  .code-line{margin-top:22px;padding:13px 16px;background:var(--indigo-soft);border:1px solid rgba(79,70,229,0.25);border-radius:12px;font-size:13px;color:var(--warm);line-height:1.5}
+  .code-line strong{color:var(--indigo)}
+  .how{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px;border-top:1px solid var(--line);padding-top:20px}
+  .how span{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:6px 12px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.05em;color:var(--warm)}
+  .foot{margin-top:20px;font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;color:var(--warm-muted)}
+  @media print{ body{background:var(--white);padding:0} .card{box-shadow:none;border:none;max-width:none} .btn{border:1.5px solid var(--indigo);color:var(--indigo);background:#fff} }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">Ionic Formulas &middot; Cycle 2 &middot; Review Game</div>
+    <h1>Ionic Formulas<br>Review Game</h1>
+    <div class="sub">Scan the code or tap the button to open the game. Your teacher will give you the access code when it is time to play.</div>
+    <div class="qr-wrap"><img id="qr" alt="QR code to open the review game"></div>
+    <div class="url" id="url">ionic-formulas-review-game.vercel.app</div>
+    <div class="url-note">Open on any phone, tablet, or laptop</div>
+    <a class="btn" id="launch" href="#">Open the Review Game</a>
+    <div class="code-line">Locked until game day. Your teacher will read out the <strong>access code</strong> when it is time to play.</div>
+    <div class="how"><span>3 ROUNDS</span><span>10 QUESTIONS EACH</span><span>1&ndash;5 TEAMS</span><span>2:00 PER QUESTION</span></div>
+    <div class="foot">FOLLOWS THE IONIC FORMULAS APP (2b) &middot; SPARK LEARNING</div>
+  </div>
+<script>
+  var URL_ = 'https://ionic-formulas-review-game.vercel.app';
+  document.getElementById('launch').href = URL_;
+  try{
+    var qr = qrcode(0,'M'); qr.addData(URL_); qr.make();
+    document.getElementById('qr').src = qr.createDataURL(8,4);
+  }catch(e){ document.getElementById('qr').replaceWith(document.createTextNode('QR unavailable — use the link below')); }
+</script>
+</body>
+</html>
