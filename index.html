@@ -283,29 +283,63 @@
 
 <script>
 /* =========================================================================
-   ACCESS GATE  (soft gate: keeps students out until game time)
-   To open the game to everyone: set GATE_ENABLED = false.
-   Code lives in PASSWORD; change it to rotate.
+   ACCESS GATE — controlled from the Spark Studio.
+   The gate asks the Studio whether this cycle's 3b Review module has an
+   access password (set/rotated via the module's "Password protected" toggle).
+   Toggle ON in the Studio → students need that code here. Toggle OFF (or no
+   password set) → the game opens straight to the menu. If the Studio can't
+   be reached at all, GATE_FALLBACK below decides (old standalone behavior).
    ========================================================================= */
-const GATE_ENABLED = true;
-const PASSWORD = 'ionic2b';
+const GATE = {
+  endpoint: 'https://sparklearningstudio.ai/api/review-game',
+  slug: 'cycle-2-ionic-bonding-ac0c5c',               // chemistry cycle publicSlug
+  moduleId: '8522fef8-f5f1-424c-926a-494868b7e842',   // 3b Review module id
+};
+const GATE_FALLBACK = { enabled: true, code: 'ionic2b' };  // offline-only
 const UNLOCK_KEY = 'ifrg-unlocked-v1';
 function isUnlocked(){ try{ return localStorage.getItem(UNLOCK_KEY)==='1'; }catch(e){ return false; } }
 function unlock(){
   document.getElementById('gate').classList.add('hide');
 }
+// true = correct/no gate · false = wrong code · 'rate' = too many tries ·
+// 'fallback' = Studio unreachable, use the local fallback rule
+async function checkGate(code){
+  try{
+    const res = await fetch(GATE.endpoint, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'verify', slug:GATE.slug, moduleId:GATE.moduleId, password:code })
+    });
+    if(res.ok) return true;
+    if(res.status===401) return false;
+    if(res.status===429) return 'rate';
+    return 'fallback';
+  }catch(e){ return 'fallback'; }
+}
 // AudioContext must start from a user gesture — init on the first tap/key, not at load.
 ['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, initAudio, {once:true}));
-if(!GATE_ENABLED || isUnlocked()) unlock();
+(async()=>{
+  if(isUnlocked()){ unlock(); return; }
+  const r = await checkGate('');
+  if(r===true) unlock();                                   // Studio gate is off
+  else if(r==='fallback' && !GATE_FALLBACK.enabled) unlock();
+  // otherwise the gate stays up and waits for the code
+})();
 document.getElementById('gate-btn').addEventListener('click', tryUnlock);
 document.getElementById('gate-input').addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
-function tryUnlock(){
+async function tryUnlock(){
   const v = document.getElementById('gate-input').value.trim();
-  if(v === PASSWORD){
+  const err = document.getElementById('gate-err');
+  err.textContent = 'Checking…';
+  const r = await checkGate(v);
+  const pass = r===true || (r==='fallback' && (!GATE_FALLBACK.enabled || v===GATE_FALLBACK.code));
+  if(pass){
     try{ localStorage.setItem(UNLOCK_KEY,'1'); }catch(e){}
+    err.textContent='';
     unlock();
+  } else if(r==='rate'){
+    err.textContent = 'Too many tries. Wait a moment, then try again.';
   } else {
-    document.getElementById('gate-err').textContent = 'That code is not right. Ask your teacher.';
+    err.textContent = 'That code is not right. Ask your teacher.';
     document.getElementById('gate-input').select();
   }
 }
