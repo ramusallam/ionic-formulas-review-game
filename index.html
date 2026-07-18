@@ -209,7 +209,7 @@
 <body>
 
 <!-- ============ PASSWORD GATE ============ -->
-<div id="gate">
+<div id="gate" class="hide">
   <div class="gate-card">
     <div class="gate-badge">
       <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -283,26 +283,28 @@
 
 <script>
 /* =========================================================================
-   ACCESS GATE — controlled from the Spark Studio.
-   The gate asks the Studio whether this cycle's 3b Review module has an
-   access password (set/rotated via the module's "Password protected" toggle).
-   Toggle ON in the Studio → students need that code here. Toggle OFF (or no
-   password set) → the game opens straight to the menu. If the Studio can't
-   be reached at all, GATE_FALLBACK below decides (old standalone behavior).
+   ACCESS GATE — controlled from the Spark Studio, and ONLY from the Studio.
+   The gate starts hidden; it appears only if the cycle's 3b Review module
+   has its "Password protected" toggle ON (the Studio verifies the code
+   server-side). Toggle OFF → the game opens straight to the menu with no
+   flash. There is NO local access code — if the Studio can't be reached,
+   the game opens.
    ========================================================================= */
 const GATE = {
   endpoint: 'https://sparklearningstudio.ai/api/review-game',
   slug: 'cycle-2-ionic-bonding-ac0c5c',               // chemistry cycle publicSlug
   moduleId: '8522fef8-f5f1-424c-926a-494868b7e842',   // 3b Review module id
 };
-const GATE_FALLBACK = { enabled: true, code: 'ionic2b' };  // offline-only
 const UNLOCK_KEY = 'ifrg-unlocked-v1';
 function isUnlocked(){ try{ return localStorage.getItem(UNLOCK_KEY)==='1'; }catch(e){ return false; } }
 function unlock(){
   document.getElementById('gate').classList.add('hide');
 }
+function showGate(){
+  document.getElementById('gate').classList.remove('hide');
+}
 // true = correct/no gate · false = wrong code · 'rate' = too many tries ·
-// 'fallback' = Studio unreachable, use the local fallback rule
+// 'open' = Studio unreachable or errored → no gate
 async function checkGate(code){
   try{
     const res = await fetch(GATE.endpoint, {
@@ -312,17 +314,15 @@ async function checkGate(code){
     if(res.ok) return true;
     if(res.status===401) return false;
     if(res.status===429) return 'rate';
-    return 'fallback';
-  }catch(e){ return 'fallback'; }
+    return 'open';
+  }catch(e){ return 'open'; }
 }
 // AudioContext must start from a user gesture — init on the first tap/key, not at load.
 ['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, initAudio, {once:true}));
 (async()=>{
-  if(isUnlocked()){ unlock(); return; }
+  if(isUnlocked()) return;
   const r = await checkGate('');
-  if(r===true) unlock();                                   // Studio gate is off
-  else if(r==='fallback' && !GATE_FALLBACK.enabled) unlock();
-  // otherwise the gate stays up and waits for the code
+  if(r===false || r==='rate') showGate();   // Studio toggle is ON — ask for the code
 })();
 document.getElementById('gate-btn').addEventListener('click', tryUnlock);
 document.getElementById('gate-input').addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
@@ -331,8 +331,7 @@ async function tryUnlock(){
   const err = document.getElementById('gate-err');
   err.textContent = 'Checking…';
   const r = await checkGate(v);
-  const pass = r===true || (r==='fallback' && (!GATE_FALLBACK.enabled || v===GATE_FALLBACK.code));
-  if(pass){
+  if(r===true || r==='open'){
     try{ localStorage.setItem(UNLOCK_KEY,'1'); }catch(e){}
     err.textContent='';
     unlock();
