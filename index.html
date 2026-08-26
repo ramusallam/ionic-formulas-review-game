@@ -429,35 +429,35 @@ const CHEM_S1 = [
     q:`The app showed you two demonstrations side by side: a bulb wired through a beaker of salt, and a heart cell with K⁺ ions inside and outside its membrane. <b>(a)</b> Explain why the bulb lights only when the salt is <b>melted or dissolved</b>, never while it is solid. <b>(b)</b> Normally there is far more K⁺ inside heart cells than in the blood outside. Explain what happens to the heartbeat when aqueous KCl floods the blood, and why.`,
     solution:`<strong>(a)</strong> Electric current is moving charge. In solid salt, the ions are locked in place in a rigid lattice, so even though charges are present, none of them can move, and the bulb stays dark. Melting or dissolving the salt frees the ions to drift, and <strong>free ions carry current</strong>, so the bulb lights.<br><strong>(b)</strong> The heartbeat depends on the imbalance itself: far more K⁺ inside each heart cell than outside. That gap is what lets each cell fire and then reset in rhythm. Flooding the blood with aqueous KCl piles K⁺ up on the outside, <strong>erasing the inside/outside gap</strong>. With no gap, the cells cannot reset, and the heart stops. The ions are not poisonous by themselves; it is destroying the balance that is deadly.` },
   { type:'chem', level:'Simple', skill:'Cation, anion & the bond',
-    q:`In the compound <b>barium chloride</b>, which ion is the cation and which is the anion? What is the name of the attraction that holds them together, and what kind of compound does that make barium chloride?`,
-    ions:[{sym:'Ba²⁺'},{sym:'Cl⁻',anion:true}],
-    solution:`Barium is the metal, and it loses electrons to become <strong>Ba²⁺</strong>, a positive ion, so barium is the <strong>cation</strong>. Chloride is the nonmetal ion, <strong>Cl⁻</strong>, a negative ion, so it is the <strong>anion</strong>. The attraction between the positive and negative ions is the <strong>ionic bond</strong>, and a metal joined to a nonmetal by transferred electrons is an <strong>ionic compound</strong>.` },
+    q:`In the compound <b>copper(II) chloride</b>, which ion is the cation and which is the anion? What is the name of the attraction that holds them together, and what kind of compound does that make copper(II) chloride?`,
+    ions:[{sym:'Cu²⁺'},{sym:'Cl⁻',anion:true}],
+    solution:`Copper is the metal, and it loses electrons to become <strong>Cu²⁺</strong> (the Roman numeral (II) tells you its charge here), a positive ion, so copper is the <strong>cation</strong>. Chloride is the nonmetal ion, <strong>Cl⁻</strong>, a negative ion, so it is the <strong>anion</strong>. The attraction between the positive and negative ions is the <strong>ionic bond</strong>, and a metal joined to a nonmetal by transferred electrons is an <strong>ionic compound</strong>.` },
   { type:'chem', level:'Challenge', skill:'Bohr transfer & neutrality',
     q:`Magnesium's shell arrangement is <b>2, 8, 2</b> and oxygen's is <b>2, 6</b>. Using the Bohr picture from the app, explain which atom loses electrons and which gains, how many electrons move, what charge each ion ends up with, and why the compound they form is neutral overall.`,
     transfer:{donor:{symbol:'Mg',protons:12,neutrons:12,shells:[2,8,2]},acceptor:{symbol:'O',protons:8,neutrons:8,shells:[2,6]},label:'2 e⁻'},
     solution:`Magnesium has 2 valence electrons sitting alone in its 3rd shell; losing 2 is far easier than gaining 6, so magnesium <strong>loses both</strong> and drops to the full arrangement 2, 8. Oxygen has 6 valence electrons and needs only 2 more to fill its 2nd shell, so oxygen <strong>gains the 2 electrons</strong> magnesium gave up, reaching 2, 8. Exactly <strong>2 electrons move</strong>. Magnesium now has 12 protons and 10 electrons: <strong>Mg²⁺</strong>. Oxygen now has 8 protons and 10 electrons: <strong>O²⁻</strong>. The 2+ and the 2&minus; are the same size, so one magnesium ion exactly cancels one oxide ion, and the compound <strong>MgO</strong> is neutral overall. That one-to-one cancellation is the Bohr-level reason magnesium oxide is MgO and not Mg₂O₂.` },
   { type:'chem', level:'Simple', skill:'The ion wall',
-    q:`Write the symbol and charge for each of these ions from the app's ion wall: the <b>barium</b> ion, the <b>aluminum</b> ion, the <b>iodide</b> ion, and the <b>nitride</b> ion.`,
-    ions:[{sym:'Ba²⁺'},{sym:'Al³⁺'},{sym:'I⁻',anion:true},{sym:'N³⁻',anion:true}],
-    solution:`Barium ion: <strong>Ba²⁺</strong>. Aluminum ion: <strong>Al³⁺</strong>. Iodide ion: <strong>I⁻</strong>. Nitride ion: <strong>N³⁻</strong>. The metals lose electrons and are positive cations; the nonmetals gain electrons, take the -ide ending, and are negative anions.` },
+    q:`Write the symbol and charge for each of these ions from the app's ion wall: the <b>copper(II)</b> ion, the <b>aluminum</b> ion, the <b>iodide</b> ion, and the <b>nitride</b> ion.`,
+    ions:[{sym:'Cu²⁺'},{sym:'Al³⁺'},{sym:'I⁻',anion:true},{sym:'N³⁻',anion:true}],
+    solution:`Copper(II) ion: <strong>Cu²⁺</strong>. Aluminum ion: <strong>Al³⁺</strong>. Iodide ion: <strong>I⁻</strong>. Nitride ion: <strong>N³⁻</strong>. The metals lose electrons and are positive cations; the nonmetals gain electrons, take the -ide ending, and are negative anions.` },
 ];
 const CHEM_S2 = [
   { type:'chem', level:'Simple', skill:'The four moves',
-    q:`Use the four moves of the method (charges, charge sizes, LCM, counts) to write the formula for <b>barium chloride</b>. Show every move.`,
+    q:`Use the four moves of the method (charges, charge sizes, LCM, counts) to write the formula for <b>copper(II) chloride</b>. Show every move.`,
     solution:moves(
-      `Ba²⁺ and Cl⁻.`,
+      `Cu²⁺ and Cl⁻.`,
       `2 and 1 (drop the signs).`,
       `LCM of 2 and 1 = <strong>2</strong>.`,
-      `Counts = LCM &divide; each size: Ba = 2 &divide; 2 = <strong>1</strong>; Cl = 2 &divide; 1 = <strong>2</strong>.`
-    )+pill(`BaCl₂`)+`One barium's 2+ is balanced by two chlorides' 1&minus; each.` },
+      `Counts = LCM &divide; each size: Cu = 2 &divide; 2 = <strong>1</strong>; Cl = 2 &divide; 1 = <strong>2</strong>.`
+    )+pill(`CuCl₂`)+`One copper's 2+ is balanced by two chlorides' 1&minus; each.` },
   { type:'chem', level:'Challenge', skill:'The equal-charge trap',
-    q:`A classmate criss-crosses the charges in <b>barium sulfide</b> and writes Ba₂S₂. Use the LCM method to find the correct formula, and explain why using the LCM (instead of criss-crossing or multiplying the charges) guarantees the formula comes out in lowest terms automatically.`,
+    q:`A classmate criss-crosses the charges in <b>copper(II) sulfide</b> and writes Cu₂S₂. Use the LCM method to find the correct formula, and explain why using the LCM (instead of criss-crossing or multiplying the charges) guarantees the formula comes out in lowest terms automatically.`,
     solution:moves(
-      `Ba²⁺ and S²⁻.`,
+      `Cu²⁺ and S²⁻.`,
       `2 and 2.`,
       `LCM of 2 and 2 = <strong>2</strong>, not 4. This is the whole trap.`,
-      `Ba = 2 &divide; 2 = <strong>1</strong>; S = 2 &divide; 2 = <strong>1</strong>.`
-    )+pill(`BaS`)+`Criss-crossing multiplies the charges together, so equal charges balloon into Ba₂S₂ and you have to remember to reduce. The <strong>LCM is, by definition, the smallest total charge both ions can reach</strong>, so dividing it by each charge size hands you the smallest whole-number counts. Lowest terms, automatically, with no reducing step to forget.` },
+      `Cu = 2 &divide; 2 = <strong>1</strong>; S = 2 &divide; 2 = <strong>1</strong>.`
+    )+pill(`CuS`)+`Criss-crossing multiplies the charges together, so equal charges balloon into Cu₂S₂ and you have to remember to reduce. The <strong>LCM is, by definition, the smallest total charge both ions can reach</strong>, so dividing it by each charge size hands you the smallest whole-number counts. Lowest terms, automatically, with no reducing step to forget.` },
   { type:'chem', level:'Simple', skill:'Reading Roman numerals',
     q:`What exactly does the Roman numeral tell you in the name <b>manganese(II) chloride</b>? Write the formula.`,
     solution:`The Roman numeral is <strong>the charge on the metal ion in this particular compound</strong>: manganese(II) means Mn²⁺. Transition metals can form more than one charge, so the name has to tell you which one you are holding.`+moves(
