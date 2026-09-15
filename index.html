@@ -408,7 +408,7 @@ function ionCards(list){
 }
 // the four moves of the method — labels match the Ionic Formulas app exactly
 function moves(m1,m2,m3,m4){
-  const L=['Move 1 &middot; Ions + charges','Move 2 &middot; Charge sizes','Move 3 &middot; LCM','Move 4 &middot; Counts'];
+  const L=['Move 1 &middot; Ions + charges','Move 2 &middot; Numbers, no signs','Move 3 &middot; Same? Drop them. Different? Switch them','Move 4 &middot; Reduce if needed'];
   return `<div class="moves">`+[m1,m2,m3,m4].map((b,i)=>
     `<div class="move"><span class="m-lbl">${L[i]}</span><span class="m-body">${b}</span></div>`
   ).join('')+`</div>`;
@@ -443,49 +443,49 @@ const CHEM_S1 = [
 ];
 const CHEM_S2 = [
   { type:'chem', level:'Simple', skill:'The four moves',
-    q:`Use the four moves of the method (charges, charge sizes, LCM, counts) to write the formula for <b>copper(II) chloride</b>. Show every move.`,
+    q:`Use the four moves of the method (ions + charges, numbers, drop or switch, reduce) to write the formula for <b>copper(II) chloride</b>. Show every move.`,
     solution:moves(
       `Cu²⁺ and Cl⁻.`,
-      `2 and 1 (drop the signs).`,
-      `LCM of 2 and 1 = <strong>2</strong>.`,
-      `Counts = LCM &divide; each size: Cu = 2 &divide; 2 = <strong>1</strong>; Cl = 2 &divide; 1 = <strong>2</strong>.`
+      `2 and 1.`,
+      `Different &mdash; switch them: the 1 goes to Cu, the 2 goes to Cl.`,
+      `CuCl₂ is already lowest terms.`
     )+pill(`CuCl₂`)+`One copper's 2+ is balanced by two chlorides' 1&minus; each.` },
   { type:'chem', level:'Challenge', skill:'The equal-charge trap',
-    q:`A classmate criss-crosses the charges in <b>copper(II) sulfide</b> and writes Cu₂S₂. Use the LCM method to find the correct formula, and explain why using the LCM (instead of criss-crossing or multiplying the charges) guarantees the formula comes out in lowest terms automatically.`,
+    q:`A classmate switches the charges in <b>copper(II) sulfide</b> and writes Cu₂S₂. Find the correct formula, and explain which move of the method the classmate broke.`,
     solution:moves(
       `Cu²⁺ and S²⁻.`,
       `2 and 2.`,
-      `LCM of 2 and 2 = <strong>2</strong>, not 4. This is the whole trap.`,
-      `Cu = 2 &divide; 2 = <strong>1</strong>; S = 2 &divide; 2 = <strong>1</strong>.`
-    )+pill(`CuS`)+`Criss-crossing multiplies the charges together, so equal charges balloon into Cu₂S₂ and you have to remember to reduce. The <strong>LCM is, by definition, the smallest total charge both ions can reach</strong>, so dividing it by each charge size hands you the smallest whole-number counts. Lowest terms, automatically, with no reducing step to forget.` },
+      `Same number &mdash; <strong>drop them</strong>. This is the whole trap.`,
+      `One Cu, one S &mdash; nothing to reduce.`
+    )+pill(`CuS`)+`Equal numbers never switch &mdash; they <strong>drop</strong>. Switching them is what ballooned the formula into Cu₂S₂. And even a classmate who switches by habit gets a second chance: Move 4 says <strong>reduce</strong>, and Cu₂S₂ reduces straight to CuS.` },
   { type:'chem', level:'Simple', skill:'Reading Roman numerals',
     q:`What exactly does the Roman numeral tell you in the name <b>manganese(II) chloride</b>? Write the formula.`,
     solution:`The Roman numeral is <strong>the charge on the metal ion in this particular compound</strong>: manganese(II) means Mn²⁺. Transition metals can form more than one charge, so the name has to tell you which one you are holding.`+moves(
       `Mn²⁺ and Cl⁻.`,
       `2 and 1.`,
-      `LCM of 2 and 1 = <strong>2</strong>.`,
-      `Mn = 2 &divide; 2 = <strong>1</strong>; Cl = 2 &divide; 1 = <strong>2</strong>.`
+      `Different &mdash; switch them: the 1 goes to Mn, the 2 goes to Cl.`,
+      `MnCl₂ is already lowest terms.`
     )+pill(`MnCl₂`) },
   { type:'chem', level:'Challenge', skill:'One metal, two oxides',
     q:`Lead forms two different oxides: <b>lead(II) oxide</b> and <b>lead(IV) oxide</b>. Write both formulas, showing every move for each. Then explain why lead's name needs a Roman numeral but sodium's name in sodium chloride does not.`,
     solution:`<div class="moves-title">Lead(II) oxide</div>`+moves(
       `Pb²⁺ and O²⁻.`,
       `2 and 2.`,
-      `LCM of 2 and 2 = <strong>2</strong>.`,
-      `Pb = 2 &divide; 2 = <strong>1</strong>; O = 2 &divide; 2 = <strong>1</strong>.`
+      `Same number &mdash; drop them.`,
+      `One Pb, one O &mdash; nothing to reduce.`
     )+pill(`PbO`)+`<div class="moves-title">Lead(IV) oxide</div>`+moves(
       `Pb⁴⁺ and O²⁻.`,
       `4 and 2.`,
-      `LCM of 4 and 2 = <strong>4</strong>.`,
-      `Pb = 4 &divide; 4 = <strong>1</strong>; O = 4 &divide; 2 = <strong>2</strong>.`
+      `Different &mdash; switch them: Pb₂O₄.`,
+      `Both counts divide by 2 &mdash; <strong>reduce</strong> to PbO₂. This is the move that earns its keep.`
     )+pill(`PbO₂`)+`Lead needs the numeral because it genuinely forms <strong>two different ions</strong>, and "lead oxide" alone would be ambiguous: PbO and PbO₂ are different compounds. Sodium only ever forms Na⁺, so "sodium chloride" can only mean one thing, and a numeral would add nothing.` },
   { type:'chem', level:'Simple', skill:'Transition metal formulas',
     q:`<b>Tin(II) fluoride</b> is the cavity-fighting ingredient in toothpaste. Write its formula, showing every move of the method.`,
     solution:moves(
       `Sn²⁺ (the (II) tells you) and F⁻.`,
       `2 and 1.`,
-      `LCM of 2 and 1 = <strong>2</strong>.`,
-      `Sn = 2 &divide; 2 = <strong>1</strong>; F = 2 &divide; 1 = <strong>2</strong>.`
+      `Different &mdash; switch them: the 1 goes to Sn, the 2 goes to F.`,
+      `SnF₂ is already lowest terms.`
     )+pill(`SnF₂`)+`One tin ion balanced by two fluorides. Check the toothpaste tube tonight: stannous fluoride is SnF₂.` },
 ];
 const CHEM_S3 = [
@@ -494,46 +494,46 @@ const CHEM_S3 = [
     solution:moves(
       `K⁺ and the permanganate ion, MnO₄⁻.`,
       `1 and 1.`,
-      `LCM of 1 and 1 = <strong>1</strong>.`,
-      `K = 1 &divide; 1 = <strong>1</strong>; MnO₄ = 1 &divide; 1 = <strong>1</strong>.`
+      `Same number &mdash; drop them.`,
+      `One of each &mdash; nothing to reduce.`
     )+pill(`KMnO₄`)+`Parentheses exist to show that a subscript multiplies a <strong>whole polyatomic group</strong>. You only need them when the count is 2 or more. Here there is exactly one permanganate, so parentheses would have nothing to do.` },
   { type:'chem', level:'Challenge', skill:'The parentheses rule',
     q:`Write the formulas for <b>potassium acetate</b> and <b>calcium acetate</b>, showing the moves for each. Both compounds contain the exact same polyatomic ion, but only one formula needs parentheses. Explain the rule that decides it.`,
     solution:`<div class="moves-title">Potassium acetate</div>`+moves(
       `K⁺ and acetate, C₂H₃O₂⁻.`,
       `1 and 1.`,
-      `LCM = <strong>1</strong>.`,
-      `One of each.`
+      `Same number &mdash; drop them.`,
+      `One of each &mdash; nothing to reduce.`
     )+pill(`KC₂H₃O₂`)+`<div class="moves-title">Calcium acetate</div>`+moves(
       `Ca²⁺ and acetate, C₂H₃O₂⁻.`,
       `2 and 1.`,
-      `LCM of 2 and 1 = <strong>2</strong>.`,
-      `Ca = 2 &divide; 2 = <strong>1</strong>; acetate = 2 &divide; 1 = <strong>2</strong>.`
+      `Different &mdash; switch them: the 1 goes to Ca, the 2 goes to acetate.`,
+      `Ca(C₂H₃O₂)₂ is already lowest terms.`
     )+pill(`Ca(C₂H₃O₂)₂`)+`The rule: <strong>parentheses wrap a polyatomic ion only when you need more than one of it</strong>, so the subscript outside clearly multiplies the whole group instead of just the last atom. One acetate in KC₂H₃O₂ needs none; two acetates in calcium acetate must be wrapped.` },
   { type:'chem', level:'Simple', skill:'The parentheses decision',
     q:`<b>Aluminum hydroxide</b> is the active ingredient in many antacids. Write its formula, showing every move, including the parentheses decision.`,
     solution:moves(
       `Al³⁺ and hydroxide, OH⁻.`,
       `3 and 1.`,
-      `LCM of 3 and 1 = <strong>3</strong>.`,
-      `Al = 3 &divide; 3 = <strong>1</strong>; OH = 3 &divide; 1 = <strong>3</strong>.`
+      `Different &mdash; switch them: the 1 goes to Al, the 3 goes to OH.`,
+      `Al(OH)₃ is already lowest terms.`
     )+pill(`Al(OH)₃`)+`Three hydroxides is more than one, so the group gets <strong>parentheses</strong>. Without them, AlOH₃ would wrongly read as one oxygen and three hydrogens instead of three whole OH groups.` },
   { type:'chem', level:'Challenge', skill:'Everything at once',
     q:`<b>Iron(III) sulfate</b> throws everything from this cycle at you at once: a transition metal, a polyatomic ion, and a parentheses decision. Write the formula, showing every move, run the neutrality check, and then explain which three separate skills from the app you just used in one problem.`,
     solution:moves(
       `The (III) tells you Fe³⁺; sulfate is SO₄²⁻.`,
       `3 and 2.`,
-      `LCM of 3 and 2 = <strong>6</strong>.`,
-      `Fe = 6 &divide; 3 = <strong>2</strong>; SO₄ = 6 &divide; 2 = <strong>3</strong> &mdash; three sulfates, so parentheses are required.`
+      `Different &mdash; switch them: the 2 goes to Fe, the 3 goes to SO₄ &mdash; three sulfates, so parentheses are required.`,
+      `Fe₂(SO₄)₃ is already lowest terms.`
     )+pill(`Fe₂(SO₄)₃`)+`<strong>Neutrality check:</strong> 2 &times; (3+) = 6+ and 3 &times; (2&minus;) = 6&minus;. They cancel exactly. The three skills stacked in this one problem: reading a <strong>Roman numeral</strong> as the metal's charge, treating a <strong>polyatomic ion</strong> as one sealed unit with its own charge, and making the <strong>parentheses decision</strong> once the count passed 1.` },
   { type:'chem', level:'Simple', skill:'Spot the mistakes',
     q:`A classmate writes <b>copper(II) sulfate</b> as Cu₂(SO₄)₂. Find both mistakes hiding in that formula and write the correct one.`,
     solution:moves(
       `Cu²⁺ (that is what the (II) says) and sulfate, SO₄²⁻.`,
       `2 and 2.`,
-      `LCM of 2 and 2 = <strong>2</strong>, not 4.`,
-      `Cu = 2 &divide; 2 = <strong>1</strong>; SO₄ = 2 &divide; 2 = <strong>1</strong>.`
-    )+pill(`CuSO₄`)+`<strong>Mistake one:</strong> the classmate criss-crossed equal charges instead of taking the LCM, so both counts came out doubled &mdash; Cu₂(SO₄)₂ is not in lowest terms. <strong>Mistake two:</strong> once the sulfate count drops to 1, the parentheses have no job &mdash; they only appear when 2 or more of a polyatomic group are needed.` },
+      `Same number &mdash; drop them.`,
+      `One Cu, one SO₄ &mdash; nothing to reduce.`
+    )+pill(`CuSO₄`)+`<strong>Mistake one:</strong> the classmate switched equal numbers instead of dropping them, so both counts came out doubled &mdash; Cu₂(SO₄)₂ is not in lowest terms. <strong>Mistake two:</strong> once the sulfate count drops to 1, the parentheses have no job &mdash; they only appear when 2 or more of a polyatomic group are needed.` },
 ];
 
 const TRIVIA_S1 = [
@@ -564,7 +564,7 @@ function interleave(chem,trivia){
 }
 const SECTIONS = [
   { title:'Round 1 · Give & Take', short:'IONIC BONDS · IONS', desc:'Electron transfer, cations and anions, and why ionic compounds behave the way they do.', items:interleave(CHEM_S1,TRIVIA_S1) },
-  { title:'Round 2 · Charges to Counts', short:'THE FOUR MOVES · ROMAN NUMERALS', desc:'The LCM method for binary formulas, plus transition metals that need a Roman numeral.', items:interleave(CHEM_S2,TRIVIA_S2) },
+  { title:'Round 2 · Charges to Counts', short:'THE FOUR MOVES · ROMAN NUMERALS', desc:'Drop or switch the numbers for binary formulas, plus transition metals that need a Roman numeral.', items:interleave(CHEM_S2,TRIVIA_S2) },
   { title:'Round 3 · The Full Stack', short:'POLYATOMIC IONS · PARENTHESES', desc:'Polyatomic ions, the parentheses decision, and problems that use everything at once.', items:interleave(CHEM_S3,TRIVIA_S3) },
 ];
 
