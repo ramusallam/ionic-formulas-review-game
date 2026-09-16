@@ -229,7 +229,7 @@
     <h1>Ionic Formulas<br>Review Game</h1>
     <p>Three rounds. Ten questions each. Chemistry and a wildcard brain-break, back to back. Work it out as a team before the reveal.</p>
     <div class="badges">
-      <span>3 ROUNDS</span><span>10 QUESTIONS EACH</span><span>2:00 PER QUESTION</span><span>1&ndash;5 TEAMS</span>
+      <span>3 ROUNDS</span><span>10 QUESTIONS EACH</span><span>2:00 PER QUESTION</span><span>1-5 TEAMS</span>
     </div>
   </div>
 
@@ -283,11 +283,11 @@
 
 <script>
 /* =========================================================================
-   ACCESS GATE — controlled from the Spark Studio, and ONLY from the Studio.
+   ACCESS GATE ,  controlled from the Spark Studio, and ONLY from the Studio.
    The gate starts hidden; it appears only if the cycle's 3b Review module
    has its "Password protected" toggle ON (the Studio verifies the code
    server-side). Toggle OFF → the game opens straight to the menu with no
-   flash. There is NO local access code — if the Studio can't be reached,
+   flash. There is NO local access code ,  if the Studio can't be reached,
    the game opens.
    ========================================================================= */
 const GATE = {
@@ -317,12 +317,12 @@ async function checkGate(code){
     return 'open';
   }catch(e){ return 'open'; }
 }
-// AudioContext must start from a user gesture — init on the first tap/key, not at load.
+// AudioContext must start from a user gesture ,  init on the first tap/key, not at load.
 ['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, initAudio, {once:true}));
 (async()=>{
   if(isUnlocked()) return;
   const r = await checkGate('');
-  if(r===false || r==='rate') showGate();   // Studio toggle is ON — ask for the code
+  if(r===false || r==='rate') showGate();   // Studio toggle is ON ,  ask for the code
 })();
 document.getElementById('gate-btn').addEventListener('click', tryUnlock);
 document.getElementById('gate-input').addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
@@ -406,9 +406,9 @@ function ionCards(list){
     `<div class="ion-card${c.anion?' anion':''}"><div class="ion-sym">${c.sym}</div><div class="ion-tag">${c.anion?'ANION':'CATION'}</div></div>`
   ).join('')+`</div>`;
 }
-// the four moves of the method — labels match the Ionic Formulas app exactly
+// the four moves of the method ,  labels match the Ionic Formulas app exactly
 function moves(m1,m2,m3,m4){
-  const L=['Move 1 &middot; Ions + charges','Move 2 &middot; Numbers, no signs','Move 3 &middot; Same? Drop them. Different? Switch them','Move 4 &middot; Reduce if needed'];
+  const L=['Move 1 &middot; Write each ion + its charge','Move 2 &middot; Numbers, no signs','Move 3 &middot; Same? Drop them. Different? Switch them','Move 4 &middot; Reduce if needed'];
   return `<div class="moves">`+[m1,m2,m3,m4].map((b,i)=>
     `<div class="move"><span class="m-lbl">${L[i]}</span><span class="m-body">${b}</span></div>`
   ).join('')+`</div>`;
@@ -435,7 +435,7 @@ const CHEM_S1 = [
   { type:'chem', level:'Challenge', skill:'Bohr transfer & neutrality',
     q:`Magnesium's shell arrangement is <b>2, 8, 2</b> and oxygen's is <b>2, 6</b>. Using the Bohr picture from the app, explain which atom loses electrons and which gains, how many electrons move, what charge each ion ends up with, and why the compound they form is neutral overall.`,
     transfer:{donor:{symbol:'Mg',protons:12,neutrons:12,shells:[2,8,2]},acceptor:{symbol:'O',protons:8,neutrons:8,shells:[2,6]},label:'2 e⁻'},
-    solution:`Magnesium has 2 valence electrons sitting alone in its 3rd shell; losing 2 is far easier than gaining 6, so magnesium <strong>loses both</strong> and drops to the full arrangement 2, 8. Oxygen has 6 valence electrons and needs only 2 more to fill its 2nd shell, so oxygen <strong>gains the 2 electrons</strong> magnesium gave up, reaching 2, 8. Exactly <strong>2 electrons move</strong>. Magnesium now has 12 protons and 10 electrons: <strong>Mg²⁺</strong>. Oxygen now has 8 protons and 10 electrons: <strong>O²⁻</strong>. The 2+ and the 2&minus; are the same size, so one magnesium ion exactly cancels one oxide ion, and the compound <strong>MgO</strong> is neutral overall. That one-to-one cancellation is the Bohr-level reason magnesium oxide is MgO and not Mg₂O₂.` },
+    solution:`Magnesium has 2 valence electrons sitting alone in its 3rd shell; losing 2 is far easier than gaining 6, so magnesium <strong>loses both</strong> and drops to the full arrangement 2, 8. Oxygen has 6 valence electrons and needs only 2 more to fill its 2nd shell, so oxygen <strong>gains the 2 electrons</strong> magnesium gave up, reaching 2, 8. Exactly <strong>2 electrons move</strong>. Magnesium now has 12 protons and 10 electrons: <strong>Mg²⁺</strong>. Oxygen now has 8 protons and 10 electrons: <strong>O²⁻</strong>. The 2+ and the 2&minus; are the same number, so one magnesium ion exactly cancels one oxide ion, and the compound <strong>MgO</strong> is neutral overall. That one-to-one cancellation is the Bohr-level reason magnesium oxide is MgO and not Mg₂O₂.` },
   { type:'chem', level:'Simple', skill:'The ion wall',
     q:`Write the symbol and charge for each of these ions from the app's ion wall: the <b>copper(II)</b> ion, the <b>aluminum</b> ion, the <b>iodide</b> ion, and the <b>nitride</b> ion.`,
     ions:[{sym:'Cu²⁺'},{sym:'Al³⁺'},{sym:'I⁻',anion:true},{sym:'N³⁻',anion:true}],
@@ -447,45 +447,45 @@ const CHEM_S2 = [
     solution:moves(
       `Cu²⁺ and Cl⁻.`,
       `2 and 1.`,
-      `Different &mdash; switch them: the 1 goes to Cu, the 2 goes to Cl.`,
-      `CuCl₂ is already lowest terms.`
+      `Different, so switch them: the 1 goes to Cu, the 2 goes to Cl.`,
+      `CuCl₂ is already reduced.`
     )+pill(`CuCl₂`)+`One copper's 2+ is balanced by two chlorides' 1&minus; each.` },
   { type:'chem', level:'Challenge', skill:'The equal-charge trap',
-    q:`A classmate switches the charges in <b>copper(II) sulfide</b> and writes Cu₂S₂. Find the correct formula, and explain which move of the method the classmate broke.`,
+    q:`A classmate switches the equal numbers in <b>copper(II) sulfide</b> and writes Cu₂S₂. Find the correct formula, and explain which move of the method the classmate broke.`,
     solution:moves(
       `Cu²⁺ and S²⁻.`,
       `2 and 2.`,
-      `Same number &mdash; <strong>drop them</strong>. This is the whole trap.`,
-      `One Cu, one S &mdash; nothing to reduce.`
-    )+pill(`CuS`)+`Equal numbers never switch &mdash; they <strong>drop</strong>. Switching them is what ballooned the formula into Cu₂S₂. And even a classmate who switches by habit gets a second chance: Move 4 says <strong>reduce</strong>, and Cu₂S₂ reduces straight to CuS.` },
+      `Same number, so <strong>drop them</strong>. This is the whole trap.`,
+      `One Cu, one S, nothing to reduce.`
+    )+pill(`CuS`)+`Equal numbers never switch. They <strong>drop</strong>. Switching them is what ballooned the formula into Cu₂S₂.` },
   { type:'chem', level:'Simple', skill:'Reading Roman numerals',
     q:`What exactly does the Roman numeral tell you in the name <b>manganese(II) chloride</b>? Write the formula.`,
     solution:`The Roman numeral is <strong>the charge on the metal ion in this particular compound</strong>: manganese(II) means Mn²⁺. Transition metals can form more than one charge, so the name has to tell you which one you are holding.`+moves(
       `Mn²⁺ and Cl⁻.`,
       `2 and 1.`,
-      `Different &mdash; switch them: the 1 goes to Mn, the 2 goes to Cl.`,
-      `MnCl₂ is already lowest terms.`
+      `Different, so switch them: the 1 goes to Mn, the 2 goes to Cl.`,
+      `MnCl₂ is already reduced.`
     )+pill(`MnCl₂`) },
   { type:'chem', level:'Challenge', skill:'One metal, two oxides',
     q:`Lead forms two different oxides: <b>lead(II) oxide</b> and <b>lead(IV) oxide</b>. Write both formulas, showing every move for each. Then explain why lead's name needs a Roman numeral but sodium's name in sodium chloride does not.`,
     solution:`<div class="moves-title">Lead(II) oxide</div>`+moves(
       `Pb²⁺ and O²⁻.`,
       `2 and 2.`,
-      `Same number &mdash; drop them.`,
-      `One Pb, one O &mdash; nothing to reduce.`
+      `Same number, so drop them.`,
+      `One Pb, one O, nothing to reduce.`
     )+pill(`PbO`)+`<div class="moves-title">Lead(IV) oxide</div>`+moves(
       `Pb⁴⁺ and O²⁻.`,
       `4 and 2.`,
-      `Different &mdash; switch them: Pb₂O₄.`,
-      `Both counts divide by 2 &mdash; <strong>reduce</strong> to PbO₂. This is the move that earns its keep.`
+      `Different, so switch them: Pb₂O₄.`,
+      `Both subscripts divide by 2, so <strong>reduce</strong> to PbO₂. This is the move that earns its keep.`
     )+pill(`PbO₂`)+`Lead needs the numeral because it genuinely forms <strong>two different ions</strong>, and "lead oxide" alone would be ambiguous: PbO and PbO₂ are different compounds. Sodium only ever forms Na⁺, so "sodium chloride" can only mean one thing, and a numeral would add nothing.` },
   { type:'chem', level:'Simple', skill:'Transition metal formulas',
     q:`<b>Tin(II) fluoride</b> is the cavity-fighting ingredient in toothpaste. Write its formula, showing every move of the method.`,
     solution:moves(
       `Sn²⁺ (the (II) tells you) and F⁻.`,
       `2 and 1.`,
-      `Different &mdash; switch them: the 1 goes to Sn, the 2 goes to F.`,
-      `SnF₂ is already lowest terms.`
+      `Different, so switch them: the 1 goes to Sn, the 2 goes to F.`,
+      `SnF₂ is already reduced.`
     )+pill(`SnF₂`)+`One tin ion balanced by two fluorides. Check the toothpaste tube tonight: stannous fluoride is SnF₂.` },
 ];
 const CHEM_S3 = [
@@ -494,59 +494,59 @@ const CHEM_S3 = [
     solution:moves(
       `K⁺ and the permanganate ion, MnO₄⁻.`,
       `1 and 1.`,
-      `Same number &mdash; drop them.`,
-      `One of each &mdash; nothing to reduce.`
+      `Same number, so drop them.`,
+      `One K, one MnO₄, nothing to reduce.`
     )+pill(`KMnO₄`)+`Parentheses exist to show that a subscript multiplies a <strong>whole polyatomic group</strong>. You only need them when the count is 2 or more. Here there is exactly one permanganate, so parentheses would have nothing to do.` },
   { type:'chem', level:'Challenge', skill:'The parentheses rule',
     q:`Write the formulas for <b>potassium acetate</b> and <b>calcium acetate</b>, showing the moves for each. Both compounds contain the exact same polyatomic ion, but only one formula needs parentheses. Explain the rule that decides it.`,
     solution:`<div class="moves-title">Potassium acetate</div>`+moves(
       `K⁺ and acetate, C₂H₃O₂⁻.`,
       `1 and 1.`,
-      `Same number &mdash; drop them.`,
-      `One of each &mdash; nothing to reduce.`
+      `Same number, so drop them.`,
+      `One K, one acetate, nothing to reduce.`
     )+pill(`KC₂H₃O₂`)+`<div class="moves-title">Calcium acetate</div>`+moves(
       `Ca²⁺ and acetate, C₂H₃O₂⁻.`,
       `2 and 1.`,
-      `Different &mdash; switch them: the 1 goes to Ca, the 2 goes to acetate.`,
-      `Ca(C₂H₃O₂)₂ is already lowest terms.`
+      `Different, so switch them: the 1 goes to Ca, the 2 goes to acetate.`,
+      `Ca(C₂H₃O₂)₂ is already reduced.`
     )+pill(`Ca(C₂H₃O₂)₂`)+`The rule: <strong>parentheses wrap a polyatomic ion only when you need more than one of it</strong>, so the subscript outside clearly multiplies the whole group instead of just the last atom. One acetate in KC₂H₃O₂ needs none; two acetates in calcium acetate must be wrapped.` },
   { type:'chem', level:'Simple', skill:'The parentheses decision',
     q:`<b>Aluminum hydroxide</b> is the active ingredient in many antacids. Write its formula, showing every move, including the parentheses decision.`,
     solution:moves(
       `Al³⁺ and hydroxide, OH⁻.`,
       `3 and 1.`,
-      `Different &mdash; switch them: the 1 goes to Al, the 3 goes to OH.`,
-      `Al(OH)₃ is already lowest terms.`
+      `Different, so switch them: the 1 goes to Al, the 3 goes to OH.`,
+      `Al(OH)₃ is already reduced.`
     )+pill(`Al(OH)₃`)+`Three hydroxides is more than one, so the group gets <strong>parentheses</strong>. Without them, AlOH₃ would wrongly read as one oxygen and three hydrogens instead of three whole OH groups.` },
   { type:'chem', level:'Challenge', skill:'Everything at once',
     q:`<b>Iron(III) sulfate</b> throws everything from this cycle at you at once: a transition metal, a polyatomic ion, and a parentheses decision. Write the formula, showing every move, run the neutrality check, and then explain which three separate skills from the app you just used in one problem.`,
     solution:moves(
       `The (III) tells you Fe³⁺; sulfate is SO₄²⁻.`,
       `3 and 2.`,
-      `Different &mdash; switch them: the 2 goes to Fe, the 3 goes to SO₄ &mdash; three sulfates, so parentheses are required.`,
-      `Fe₂(SO₄)₃ is already lowest terms.`
+      `Different, so switch them: the 2 goes to Fe, the 3 goes to SO₄. Three sulfates, so parentheses are required.`,
+      `Fe₂(SO₄)₃ is already reduced.`
     )+pill(`Fe₂(SO₄)₃`)+`<strong>Neutrality check:</strong> 2 &times; (3+) = 6+ and 3 &times; (2&minus;) = 6&minus;. They cancel exactly. The three skills stacked in this one problem: reading a <strong>Roman numeral</strong> as the metal's charge, treating a <strong>polyatomic ion</strong> as one sealed unit with its own charge, and making the <strong>parentheses decision</strong> once the count passed 1.` },
   { type:'chem', level:'Simple', skill:'Spot the mistakes',
     q:`A classmate writes <b>copper(II) sulfate</b> as Cu₂(SO₄)₂. Find both mistakes hiding in that formula and write the correct one.`,
     solution:moves(
       `Cu²⁺ (that is what the (II) says) and sulfate, SO₄²⁻.`,
       `2 and 2.`,
-      `Same number &mdash; drop them.`,
-      `One Cu, one SO₄ &mdash; nothing to reduce.`
-    )+pill(`CuSO₄`)+`<strong>Mistake one:</strong> the classmate switched equal numbers instead of dropping them, so both counts came out doubled &mdash; Cu₂(SO₄)₂ is not in lowest terms. <strong>Mistake two:</strong> once the sulfate count drops to 1, the parentheses have no job &mdash; they only appear when 2 or more of a polyatomic group are needed.` },
+      `Same number, so drop them.`,
+      `One Cu, one SO₄, nothing to reduce.`
+    )+pill(`CuSO₄`)+`<strong>Mistake one:</strong> the classmate switched equal numbers instead of dropping them, so both subscripts came out doubled, and Cu₂(SO₄)₂ is not in lowest terms. <strong>Mistake two:</strong> once the sulfate count drops to 1, the parentheses have no job; they only appear when 2 or more of a polyatomic group are needed.` },
 ];
 
 const TRIVIA_S1 = [
   {type:'trivia',category:'POP CULTURE',q:`Fresh off sweeping five Grammys for "Not Like Us," who headlined the Super Bowl LIX halftime show in February 2025?`,choices:['Kendrick Lamar','Usher','Rihanna','Post Malone'],answer:0,explanation:`<strong>Kendrick Lamar</strong> headlined in New Orleans, with SZA as his guest. That same month "Not Like Us" won five Grammys, including both Record and Song of the Year.`},
-  {type:'trivia',category:'SPORTS',q:`The men's 100 m final at the 2024 Paris Olympics was the closest in Olympic history &mdash; gold decided by five thousandths of a second. Who won?`,choices:['Noah Lyles','Kishane Thompson','Fred Kerley','Marcell Jacobs'],answer:0,explanation:`<strong>Noah Lyles</strong> (USA) edged Jamaica's Kishane Thompson, 9.784 to 9.789 &mdash; so close the winner was only visible on the photo finish. It was the first US men's 100 m gold since 2004.`},
+  {type:'trivia',category:'SPORTS',q:`The men's 100 m final at the 2024 Paris Olympics was the closest in Olympic history, with gold decided by five thousandths of a second. Who won?`,choices:['Noah Lyles','Kishane Thompson','Fred Kerley','Marcell Jacobs'],answer:0,explanation:`<strong>Noah Lyles</strong> (USA) edged Jamaica's Kishane Thompson, 9.784 to 9.789, so close the winner was only visible on the photo finish. It was the first US men's 100 m gold since 2004.`},
   {type:'trivia',category:'INTERNET & SLANG',q:`Oxford's 2024 Word of the Year names the mental fog you get from scrolling endless low-quality content. What is the term?`,choices:['Brain rot','Doomscrolling','Slop','Demure'],answer:0,explanation:`<strong>Brain rot.</strong> The term is older than the internet: Henry David Thoreau used it in Walden in 1854 to complain that society undervalues complex ideas. "Demure" was among the finalists.`},
-  {type:'trivia',category:'MUSIC',q:`At the 2025 Grammys, Beyoncé finally won Album of the Year on her fifth nomination in the category. Which album did it?`,choices:['Cowboy Carter','Renaissance','Lemonade','4'],answer:0,explanation:`<strong>Cowboy Carter</strong>, her genre-flipping country album, which also won Best Country Album. The night pushed her career total to 35 Grammys &mdash; the most of any artist in history.`},
+  {type:'trivia',category:'MUSIC',q:`At the 2025 Grammys, Beyoncé finally won Album of the Year on her fifth nomination in the category. Which album did it?`,choices:['Cowboy Carter','Renaissance','Lemonade','4'],answer:0,explanation:`<strong>Cowboy Carter</strong>, her genre-flipping country album, which also won Best Country Album. The night pushed her career total to 35 Grammys, the most of any artist in history.`},
   {type:'trivia',category:'FILM & TV',q:`The highest-grossing movie of 2024 worldwide was a Pixar sequel about emotions navigating the teenage years. Which film?`,choices:['Inside Out 2','Moana 2','Deadpool & Wolverine','Despicable Me 4'],answer:0,explanation:`<strong>Inside Out 2</strong> earned about $1.7 billion, Pixar's biggest film ever, powered by the new emotion Anxiety. Deadpool &amp; Wolverine finished second.`},
 ];
 const TRIVIA_S2 = [
-  {type:'trivia',category:'WORLD HISTORY',q:`The Rosetta Stone, found in 1799, cracked an entire ancient writing system because one decree was carved on it in three scripts. Which system did it unlock?`,choices:['Egyptian hieroglyphs','Cuneiform','Linear B','Mayan glyphs'],answer:0,explanation:`<strong>Egyptian hieroglyphs.</strong> The same decree appears in hieroglyphs, Demotic, and ancient Greek &mdash; and since scholars could read the Greek, Champollion used it to decipher the hieroglyphs by 1822.`},
-  {type:'trivia',category:'US GOVERNMENT',q:`How many justices sit on the United States Supreme Court?`,choices:['Seven','Nine','Eleven','Thirteen'],answer:1,explanation:`<strong>Nine</strong> &mdash; one chief justice and eight associate justices. The Constitution never sets the number; Congress fixed it at nine in 1869 and it has not changed since.`},
-  {type:'trivia',category:'GEOGRAPHY',q:`As of 2024, which country has the largest population on Earth?`,choices:['China','India','United States','Indonesia'],answer:1,explanation:`<strong>India</strong>, at roughly 1.44 billion people, passed China in 2023 &mdash; the first change at the top in centuries. The United States is a distant third at about 340 million.`},
+  {type:'trivia',category:'WORLD HISTORY',q:`The Rosetta Stone, found in 1799, cracked an entire ancient writing system because one decree was carved on it in three scripts. Which system did it unlock?`,choices:['Egyptian hieroglyphs','Cuneiform','Linear B','Mayan glyphs'],answer:0,explanation:`<strong>Egyptian hieroglyphs.</strong> The same decree appears in hieroglyphs, Demotic, and ancient Greek, and since scholars could read the Greek, Champollion used it to decipher the hieroglyphs by 1822.`},
+  {type:'trivia',category:'US GOVERNMENT',q:`How many justices sit on the United States Supreme Court?`,choices:['Seven','Nine','Eleven','Thirteen'],answer:1,explanation:`<strong>Nine</strong>, one chief justice and eight associate justices. The Constitution never sets the number; Congress fixed it at nine in 1869 and it has not changed since.`},
+  {type:'trivia',category:'GEOGRAPHY',q:`As of 2024, which country has the largest population on Earth?`,choices:['China','India','United States','Indonesia'],answer:1,explanation:`<strong>India</strong>, at roughly 1.44 billion people, passed China in 2023, the first change at the top in centuries. The United States is a distant third at about 340 million.`},
   {type:'trivia',category:'WORLD EVENTS',q:`Notre-Dame cathedral in Paris triumphantly reopened in December 2024, five years after what closed it?`,choices:['A massive roof fire','An earthquake','A flood of the Seine','A structural collapse'],answer:0,explanation:`<strong>The April 2019 fire</strong> that destroyed its spire and medieval roof. Roughly 2,000 craftspeople and about &euro;700 million rebuilt it, using oak beams cut with medieval techniques.`},
   {type:'trivia',category:'ECONOMICS',q:`When economists say a country is experiencing inflation, what exactly is happening?`,choices:['Prices are generally rising, so each dollar buys less','The stock market is falling','Unemployment is going up','The government is printing less money'],answer:0,explanation:`<strong>A general, sustained rise in prices</strong> that shrinks what each dollar buys. It is tracked with the Consumer Price Index, and central banks like the Federal Reserve aim to hold it near 2% a year.`},
 ];
@@ -554,8 +554,8 @@ const TRIVIA_S3 = [
   {type:'trivia',category:'LITERATURE',q:`"To be, or not to be" opens the most famous soliloquy in English drama. Which Shakespeare play is it from?`,choices:['Macbeth','Hamlet','Romeo and Juliet','Othello'],answer:1,explanation:`<strong>Hamlet.</strong> The Prince of Denmark delivers it in Act 3, weighing existence itself. It is likely the most quoted passage in all of English literature.`},
   {type:'trivia',category:'SCIENCE',q:`Roughly what fraction of the air you are breathing right now is nitrogen?`,choices:['About 21%','About 50%','About 78%','About 90%'],answer:2,explanation:`<strong>About 78%</strong> is nitrogen; only about 21% is the oxygen you actually use. N₂'s triple bond makes it so unreactive that it mostly just rides along in every breath.`},
   {type:'trivia',category:'SPACE',q:`After a 2023 discovery haul of 62 new moons, which planet now has the most confirmed moons in our solar system?`,choices:['Jupiter','Saturn','Uranus','Neptune'],answer:1,explanation:`<strong>Saturn</strong>, with over 140 confirmed moons after the 2023 announcements pushed it past Jupiter. Most are tiny captured chunks only a few kilometers across.`},
-  {type:'trivia',category:'LIFE SKILLS',q:`Your credit score is a three-digit number lenders check before giving you a loan. What does it primarily measure?`,choices:['How much money you earn','How reliably you have repaid borrowed money','How much you keep in savings','How many bank accounts you have'],answer:1,explanation:`<strong>How reliably you repay what you borrow</strong> &mdash; payment history and amounts owed drive most of it. Your income and savings are not even part of the formula. Scores run 300 to 850.`},
-  {type:'trivia',category:'ART & CULTURE',q:`Swirling blues, a flame-like cypress tree, and a village under a wild night sky &mdash; painted from an asylum window in 1889. Name the painting and the artist.`,choices:['The Scream — Edvard Munch','The Starry Night — Vincent van Gogh','Impression, Sunrise — Claude Monet','Water Lilies — Claude Monet'],answer:1,explanation:`<strong>The Starry Night, by Vincent van Gogh</strong>, painted at the Saint-Rémy asylum in June 1889. He considered it a failed study; it has hung in New York's MoMA since 1941.`},
+  {type:'trivia',category:'LIFE SKILLS',q:`Your credit score is a three-digit number lenders check before giving you a loan. What does it primarily measure?`,choices:['How much money you earn','How reliably you have repaid borrowed money','How much you keep in savings','How many bank accounts you have'],answer:1,explanation:`<strong>How reliably you repay what you borrow</strong>. Payment history and amounts owed drive most of it. Your income and savings are not even part of the formula. Scores run 300 to 850.`},
+  {type:'trivia',category:'ART & CULTURE',q:`Swirling blues, a flame-like cypress tree, and a village under a wild night sky, painted from an asylum window in 1889. Name the painting and the artist.`,choices:['The Scream, Edvard Munch','The Starry Night, Vincent van Gogh','Impression, Sunrise, Claude Monet','Water Lilies, Claude Monet'],answer:1,explanation:`<strong>The Starry Night, by Vincent van Gogh</strong>, painted at the Saint-Rémy asylum in June 1889. He considered it a failed study; it has hung in New York's MoMA since 1941.`},
 ];
 
 // interleave chem/trivia -> 10 items per round, starting with chem
@@ -564,7 +564,7 @@ function interleave(chem,trivia){
 }
 const SECTIONS = [
   { title:'Round 1 · Give & Take', short:'IONIC BONDS · IONS', desc:'Electron transfer, cations and anions, and why ionic compounds behave the way they do.', items:interleave(CHEM_S1,TRIVIA_S1) },
-  { title:'Round 2 · Charges to Counts', short:'THE FOUR MOVES · ROMAN NUMERALS', desc:'Drop or switch the numbers for binary formulas, plus transition metals that need a Roman numeral.', items:interleave(CHEM_S2,TRIVIA_S2) },
+  { title:'Round 2 · Drop or Switch', short:'THE FOUR MOVES · ROMAN NUMERALS', desc:'Drop or switch the numbers for binary formulas, plus transition metals that need a Roman numeral.', items:interleave(CHEM_S2,TRIVIA_S2) },
   { title:'Round 3 · The Full Stack', short:'POLYATOMIC IONS · PARENTHESES', desc:'Polyatomic ions, the parentheses decision, and problems that use everything at once.', items:interleave(CHEM_S3,TRIVIA_S3) },
 ];
 
@@ -688,7 +688,7 @@ function reveal(){
     const qs=document.getElementById('q-stage');
     qs.querySelectorAll('.choice').forEach((c,i)=>{ if(i===curAnswer) c.classList.add('correct'); });
     rs.innerHTML=`<div class="reveal trivia-rev">
-      <div class="reveal-head"><div class="chk">&#10003;</div><h3>${'ABCD'[curAnswer]} &mdash; ${curChoices[curAnswer]}</h3></div>
+      <div class="reveal-head"><div class="chk">&#10003;</div><h3>${'ABCD'[curAnswer]} &middot; ${curChoices[curAnswer]}</h3></div>
       <div class="sol">${d.explanation}</div></div>`;
   }
   rs.style.display='';
