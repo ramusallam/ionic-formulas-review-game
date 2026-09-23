@@ -148,10 +148,8 @@
   .whiteboard-hint{display:flex;align-items:center;gap:9px;margin-top:20px;padding:12px 15px;background:var(--cream);border-radius:11px;font-size:0.86rem;color:var(--warm)}
   .whiteboard-hint svg{width:18px;height:18px;stroke:var(--indigo);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-  /* trivia */
-  .card.trivia{border-top:4px solid var(--amber);background:linear-gradient(180deg,#FFFDF8,var(--white))}
-  .trivia-cat{display:inline-block;background:var(--amber);color:#fff;padding:5px 14px;border-radius:16px;font-size:0.68rem;font-weight:700;font-family:var(--font-mono);letter-spacing:0.14em;margin-bottom:14px}
   .brain-break{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;color:var(--amber);font-weight:700;margin-bottom:6px;text-transform:uppercase}
+  /* multiple choice */
   .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
   @media(max-width:640px){.choices{grid-template-columns:1fr}}
   .choice{background:var(--cream);border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:13px;font-size:1.02rem;color:var(--ink);transition:all .18s}
@@ -162,15 +160,12 @@
 
   /* reveal */
   .reveal{background:var(--white);border:1px solid var(--line);border-left:5px solid var(--indigo);border-radius:14px;box-shadow:var(--sh-sm);padding:26px 28px;margin-bottom:18px;animation:fadeUp .35s ease-out}
-  .reveal.trivia-rev{border-left-color:var(--green)}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .reveal-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
   .reveal-head .chk{width:28px;height:28px;border-radius:50%;background:var(--indigo);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
-  .reveal.trivia-rev .chk{background:var(--green)}
   .reveal-head h3{font-family:var(--font-serif);font-size:1.12rem;color:var(--ink)}
   .sol{font-size:1rem;color:var(--ink);line-height:1.7}
   .sol strong{color:var(--indigo);font-weight:700}
-  .reveal.trivia-rev .sol strong{color:var(--green)}
   .visual{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin:6px 0 18px;padding:18px;background:var(--cream);border-radius:12px}
   .visual svg{max-width:100%;height:auto}
   .transfer-svg{width:460px}
@@ -203,6 +198,25 @@
   .btn-reveal{background:#F3E7DE;color:#B4551F}
   .btn-reveal:hover{background:#eeddce;transform:translateY(-1px)}
 
+  .card.chem-mc .choice .ltr{background:var(--indigo)}
+  .card.chem-mc .choice{font-family:var(--font-serif);font-size:1.22rem;font-weight:600}
+  /* name that face */
+  .card.face{border-top:4px solid var(--amber);background:linear-gradient(180deg,#FFFDF8,var(--white))}
+  .sliver{width:100%;height:210px;border-radius:14px;background-color:#1C1917;background-repeat:no-repeat;margin-top:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.08)}
+  .face-tools{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .face-tools .hint{font-size:0.84rem;color:var(--warm)}
+  .widen{background:var(--cream);color:var(--warm);border:1px solid var(--line);padding:8px 14px;border-radius:9px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:var(--font-sans)}
+  .widen:hover{background:#efe9dd}
+  .widen:disabled{opacity:.45;cursor:default}
+  .sliver.animate{transition:background-size .5s ease,background-position .5s ease}
+  .face-reveal{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:28px;align-items:center;background:var(--white);border:1px solid var(--line);border-top:4px solid var(--green);border-radius:18px;box-shadow:var(--sh-md);padding:28px;margin-bottom:18px;animation:fadeUp .35s ease-out}
+  @media(max-width:700px){.face-reveal{grid-template-columns:1fr}}
+  .portrait{width:100%;aspect-ratio:4/5;border-radius:14px;background-color:#1C1917;background-repeat:no-repeat}
+  .face-name{font-family:var(--font-serif);font-size:2rem;font-weight:700;line-height:1.1;color:var(--ink);margin:6px 0 4px}
+  .face-meta{font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-muted);font-weight:700}
+  .face-fact{margin-top:18px;padding:14px 16px;background:var(--amber-soft);border:1px solid var(--amber-line);border-radius:12px;font-size:1.02rem;line-height:1.6;color:var(--ink)}
+  .face-fact b{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+  .face-credit{margin-top:12px;font-size:0.7rem;color:var(--warm-muted)}
   .app-foot{text-align:center;padding:26px 20px 40px;color:var(--warm-muted);font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.1em}
 </style>
 </head>
@@ -227,7 +241,7 @@
   <div class="hero">
     <div class="kicker">Cycle 2 &middot; Follows the Ionic Formulas App (2b)</div>
     <h1>Ionic Formulas<br>Review Game</h1>
-    <p>Three rounds. Ten questions each. Chemistry and a wildcard brain-break, back to back. Work it out as a team before the reveal.</p>
+    <p>Three rounds. Ten questions each. Chemistry and Name That Face, back to back. Work it out as a team before the reveal.</p>
     <div class="badges">
       <span>3 ROUNDS</span><span>10 QUESTIONS EACH</span><span>2:00 PER QUESTION</span><span>1-5 TEAMS</span>
     </div>
@@ -236,7 +250,7 @@
   <div class="wrap">
     <div class="cards" id="section-cards"></div>
     <div class="score-mount" id="score-menu"></div>
-    <div class="menu-note">Press F for fullscreen &middot; scores save on this device &middot; every other question is a wildcard trivia break</div>
+    <div class="menu-note">Press F for fullscreen &middot; scores save on this device &middot; every other question is Name That Face</div>
   </div>
 </div>
 
@@ -253,7 +267,8 @@
   <div class="stage">
     <div class="timer-row">
       <label>Timer</label>
-      <select id="timer-len" onchange="resetTimer()">
+      <select id="timer-len" onchange="rememberLen();resetTimer()">
+        <option value="30">0:30</option>
         <option value="60">1:00</option>
         <option value="90">1:30</option>
         <option value="120" selected>2:00</option>
@@ -279,7 +294,7 @@
   </div>
 </div>
 
-<div class="app-foot">IONIC FORMULAS REVIEW GAME &middot; BONDS &middot; THE FOUR MOVES &middot; POLYATOMICS &middot; SPARK LEARNING</div>
+<div class="app-foot">IONIC FORMULAS REVIEW GAME &middot; BONDS &middot; THE FOUR MOVES &middot; POLYATOMICS &middot; NAME THAT FACE &middot; SPARK LEARNING</div>
 
 <script>
 /* =========================================================================
@@ -417,155 +432,195 @@ function pill(f){ return `<div style="text-align:center"><span class="formula-pi
 
 /* =========================================================================
    QUESTION DATA
-   Chem = open-response (work on whiteboards, then reveal the worked solution).
-   Trivia = multiple choice wildcard brain-break. They alternate chem/trivia.
+   Chem = 4-choice multiple choice. Authored with the right answer first
+   (answer:0); renderQuestion() shuffles the letters every time, so the
+   correct choice lands in a random A-D slot. Wrong choices are the real
+   mistakes students make, so no answer is a giveaway.
+   Faces = Name That Face. A sliver of a famous face, then the full photo.
+   They alternate chem/face.
    ========================================================================= */
 const CHEM_S1 = [
-  { type:'chem', level:'Simple', skill:'Electron transfer & -ide naming',
-    q:`In the app's opening animation, a sodium atom handed its single outer electron to a chlorine atom. What charge did each atom end up with, and why is the compound called <b>sodium chloride</b> instead of "sodium chlorine"?`,
-    transfer:{donor:{symbol:'Na',protons:11,neutrons:12,shells:[2,8,1]},acceptor:{symbol:'Cl',protons:17,neutrons:18,shells:[2,8,7]},label:'1 e⁻'},
-    solution:`Sodium lost one electron, leaving it with 11 protons but only 10 electrons, so it became <strong>Na⁺</strong>, a cation. Chlorine gained that electron, giving it 17 protons and 18 electrons, so it became <strong>Cl⁻</strong>, an anion. The naming rule: the metal keeps its name (sodium), but the nonmetal changes its ending to <strong>-ide</strong>, so chlorine becomes chloride. That is why the compound is sodium chloride, NaCl, and never "sodium chlorine." The -ide ending is your signal that the nonmetal is now an ion inside a compound, not a free element.` },
+  { type:'chem', level:'Challenge', skill:'Predicting ion charges',
+    q:`In the sub assignment you placed your ion predictions on the periodic table. <b>Selenium</b> sits in the same column as oxygen and has <b>6 valence electrons</b>. Which ion does selenium form?`,
+    choices:['Se²⁻','Se⁶⁺','Se²⁺','Se⁶⁻'], answer:0,
+    solution:`Shells want to be empty or full. With 6 valence electrons, selenium is <strong>2 short of full</strong> but 6 away from empty, so it gains 2. That leaves 34 protons against 36 electrons: <strong>Se²⁻</strong>, the selenide ion. Same column as oxygen, same charge as oxide (O²⁻). That column pattern is exactly what your predictions showed.` },
   { type:'chem', level:'Challenge', skill:'Why ionic compounds conduct',
-    q:`The app showed you two demonstrations side by side: a bulb wired through a beaker of salt, and a heart cell with K⁺ ions inside and outside its membrane. <b>(a)</b> Explain why the bulb lights only when the salt is <b>melted or dissolved</b>, never while it is solid. <b>(b)</b> Normally there is far more K⁺ inside heart cells than in the blood outside. Explain what happens to the heartbeat when aqueous KCl floods the blood, and why.`,
-    solution:`<strong>(a)</strong> Electric current is moving charge. In solid salt, the ions are locked in place in a rigid lattice, so even though charges are present, none of them can move, and the bulb stays dark. Melting or dissolving the salt frees the ions to drift, and <strong>free ions carry current</strong>, so the bulb lights.<br><strong>(b)</strong> The heartbeat depends on the imbalance itself: far more K⁺ inside each heart cell than outside. That gap is what lets each cell fire and then reset in rhythm. Flooding the blood with aqueous KCl piles K⁺ up on the outside, <strong>erasing the inside/outside gap</strong>. With no gap, the cells cannot reset, and the heart stops. The ions are not poisonous by themselves; it is destroying the balance that is deadly.` },
-  { type:'chem', level:'Simple', skill:'Cation, anion & the bond',
-    q:`In the compound <b>copper(II) chloride</b>, which ion is the cation and which is the anion? What is the name of the attraction that holds them together, and what kind of compound does that make copper(II) chloride?`,
-    ions:[{sym:'Cu²⁺'},{sym:'Cl⁻',anion:true}],
-    solution:`Copper is the metal, and it loses electrons to become <strong>Cu²⁺</strong> (the Roman numeral (II) tells you its charge here), a positive ion, so copper is the <strong>cation</strong>. Chloride is the nonmetal ion, <strong>Cl⁻</strong>, a negative ion, so it is the <strong>anion</strong>. The attraction between the positive and negative ions is the <strong>ionic bond</strong>, and a metal joined to a nonmetal by transferred electrons is an <strong>ionic compound</strong>.` },
-  { type:'chem', level:'Challenge', skill:'Bohr transfer & neutrality',
-    q:`Magnesium's shell arrangement is <b>2, 8, 2</b> and oxygen's is <b>2, 6</b>. Using the Bohr picture from the app, explain which atom loses electrons and which gains, how many electrons move, what charge each ion ends up with, and why the compound they form is neutral overall.`,
-    transfer:{donor:{symbol:'Mg',protons:12,neutrons:12,shells:[2,8,2]},acceptor:{symbol:'O',protons:8,neutrons:8,shells:[2,6]},label:'2 e⁻'},
-    solution:`Magnesium has 2 valence electrons sitting alone in its 3rd shell; losing 2 is far easier than gaining 6, so magnesium <strong>loses both</strong> and drops to the full arrangement 2, 8. Oxygen has 6 valence electrons and needs only 2 more to fill its 2nd shell, so oxygen <strong>gains the 2 electrons</strong> magnesium gave up, reaching 2, 8. Exactly <strong>2 electrons move</strong>. Magnesium now has 12 protons and 10 electrons: <strong>Mg²⁺</strong>. Oxygen now has 8 protons and 10 electrons: <strong>O²⁻</strong>. The 2+ and the 2&minus; are the same number, so one magnesium ion exactly cancels one oxide ion, and the compound <strong>MgO</strong> is neutral overall. That one-to-one cancellation is the Bohr-level reason magnesium oxide is MgO and not Mg₂O₂.` },
+    q:`Three beakers of KCl are wired into the bulb circuit: <b>solid crystals</b>, <b>melted KCl</b>, and <b>KCl dissolved in water</b>. Which ones light the bulb?`,
+    choices:['Only the melted and the dissolved KCl','All three, because KCl is made of ions','Only the dissolved KCl, because the water is what conducts','Only the solid, because its ions are packed closest together'], answer:0,
+    solution:`Electric current is <strong>moving charge</strong>. In the solid, the ions are locked in place in a rigid lattice, so the charges are there but none of them can move, and the bulb stays dark. Melting or dissolving frees the ions to drift, and <strong>free ions carry current</strong>. Pure water alone barely conducts at all; it is the freed K⁺ and Cl⁻ doing the work.` },
+  { type:'chem', level:'Challenge', skill:'The heart and K⁺',
+    q:`Normally there is far more K⁺ <b>inside</b> a heart cell than in the blood <b>outside</b> it. Why does flooding the blood with aqueous KCl stop the heart?`,
+    choices:['It shrinks the K⁺ gap between inside and outside, so the cells cannot reset and fire again','K⁺ ions are poisonous to heart muscle on contact','The KCl crystallizes in the blood and blocks the heart','The extra Cl⁻ ions carry so much current that they short-circuit the heart'], answer:0,
+    solution:`The heartbeat runs on the imbalance itself: far more K⁺ inside each cell than outside. That gap is what lets each cell fire and then reset in rhythm. Flooding the blood with aqueous KCl piles K⁺ up on the outside and <strong>shrinks the inside/outside gap</strong>. Once the gap is too small, the cells cannot reset, and the heart stops. The ions are not poisonous by themselves; destroying the balance is what is deadly.` },
+  { type:'chem', level:'Challenge', skill:'Same number, opposite sign',
+    q:`Aluminum's shells are <b>2, 8, 3</b> and phosphorus's are <b>2, 8, 5</b>. Which pair of ions do they form?`,
+    choices:['Al³⁺ and P³⁻','Al³⁻ and P⁵⁺','Al³⁺ and P⁵⁻','Al⁵⁻ and P³⁺'], answer:0,
+    transfer:{donor:{symbol:'Al',protons:13,neutrons:14,shells:[2,8,3]},acceptor:{symbol:'P',protons:15,neutrons:16,shells:[2,8,5]},label:'3 e⁻'},
+    solution:`Each atom takes the shortest path to a full outer shell. Aluminum has only 3 valence electrons, so <strong>losing 3</strong> is far easier than gaining 5: 13 protons against 10 electrons, <strong>Al³⁺</strong>. Phosphorus has 5, so <strong>gaining 3</strong> is far easier than losing 5: 15 protons against 18 electrons, <strong>P³⁻</strong>, phosphide. Same number, opposite sign, because one atom was 3 over a full shell and the other was 3 short of one.` },
   { type:'chem', level:'Simple', skill:'The ion wall',
-    q:`Write the symbol and charge for each of these ions from the app's ion wall: the <b>copper(II)</b> ion, the <b>aluminum</b> ion, the <b>iodide</b> ion, and the <b>nitride</b> ion.`,
+    q:`Which row gets every ion from the app's ion wall right: the <b>copper(II)</b> ion, the <b>aluminum</b> ion, the <b>iodide</b> ion, and the <b>nitride</b> ion?`,
+    choices:['Cu²⁺, Al³⁺, I⁻, N³⁻','Cu²⁺, Al³⁺, I⁻, N⁵⁻','Cu²⁺, Al³⁺, I⁺, N³⁺','Cu⁺, Al³⁺, I⁻, N³⁻'], answer:0,
     ions:[{sym:'Cu²⁺'},{sym:'Al³⁺'},{sym:'I⁻',anion:true},{sym:'N³⁻',anion:true}],
-    solution:`Copper(II) ion: <strong>Cu²⁺</strong>. Aluminum ion: <strong>Al³⁺</strong>. Iodide ion: <strong>I⁻</strong>. Nitride ion: <strong>N³⁻</strong>. The metals lose electrons and are positive cations; the nonmetals gain electrons, take the -ide ending, and are negative anions.` },
+    solution:`The (II) says copper is <strong>2+</strong> here. Aluminum loses its 3 valence electrons: <strong>Al³⁺</strong>. Iodine and nitrogen are nonmetals, so they <strong>gain</strong> electrons, go negative, and take the -ide ending: iodide is <strong>I⁻</strong> (1 short of full) and nitride is <strong>N³⁻</strong> (3 short of full). N⁵⁻ counts nitrogen's 5 valence electrons instead of the 3 it needs.` },
 ];
 const CHEM_S2 = [
-  { type:'chem', level:'Simple', skill:'The four moves',
-    q:`Use the four moves of the method (ions + charges, numbers, drop or switch, reduce) to write the formula for <b>copper(II) chloride</b>. Show every move.`,
-    solution:moves(
-      `Cu²⁺ and Cl⁻.`,
-      `2 and 1.`,
-      `Different, so switch them: the 1 goes to Cu, the 2 goes to Cl.`,
-      `CuCl₂ is already reduced.`
-    )+pill(`CuCl₂`)+`One copper's 2+ is balanced by two chlorides' 1&minus; each.` },
   { type:'chem', level:'Challenge', skill:'The equal-charge trap',
-    q:`A classmate switches the equal numbers in <b>copper(II) sulfide</b> and writes Cu₂S₂. Find the correct formula, and explain which move of the method the classmate broke.`,
+    q:`A classmate writes <b>copper(II) sulfide</b> as Cu₂S₂. What is the correct formula?`,
+    choices:['CuS','Cu₂S₂, it is already right','Cu₂S','CuS₂'], answer:0,
     solution:moves(
       `Cu²⁺ and S²⁻.`,
       `2 and 2.`,
       `Same number, so <strong>drop them</strong>. This is the whole trap.`,
       `One Cu, one S, nothing to reduce.`
     )+pill(`CuS`)+`Equal numbers never switch. They <strong>drop</strong>. Switching them is what ballooned the formula into Cu₂S₂.` },
-  { type:'chem', level:'Simple', skill:'Reading Roman numerals',
-    q:`What exactly does the Roman numeral tell you in the name <b>manganese(II) chloride</b>? Write the formula.`,
-    solution:`The Roman numeral is <strong>the charge on the metal ion in this particular compound</strong>: manganese(II) means Mn²⁺. Transition metals can form more than one charge, so the name has to tell you which one you are holding.`+moves(
-      `Mn²⁺ and Cl⁻.`,
-      `2 and 1.`,
-      `Different, so switch them: the 1 goes to Mn, the 2 goes to Cl.`,
-      `MnCl₂ is already reduced.`
-    )+pill(`MnCl₂`) },
-  { type:'chem', level:'Challenge', skill:'One metal, two oxides',
-    q:`Lead forms two different oxides: <b>lead(II) oxide</b> and <b>lead(IV) oxide</b>. Write both formulas, showing every move for each. Then explain why lead's name needs a Roman numeral but sodium's name in sodium chloride does not.`,
-    solution:`<div class="moves-title">Lead(II) oxide</div>`+moves(
-      `Pb²⁺ and O²⁻.`,
-      `2 and 2.`,
-      `Same number, so drop them.`,
-      `One Pb, one O, nothing to reduce.`
-    )+pill(`PbO`)+`<div class="moves-title">Lead(IV) oxide</div>`+moves(
-      `Pb⁴⁺ and O²⁻.`,
-      `4 and 2.`,
-      `Different, so switch them: Pb₂O₄.`,
-      `Both subscripts divide by 2, so <strong>reduce</strong> to PbO₂. This is the move that earns its keep.`
-    )+pill(`PbO₂`)+`Lead needs the numeral because it genuinely forms <strong>two different ions</strong>, and "lead oxide" alone would be ambiguous: PbO and PbO₂ are different compounds. Sodium only ever forms Na⁺, so "sodium chloride" can only mean one thing, and a numeral would add nothing.` },
-  { type:'chem', level:'Simple', skill:'Transition metal formulas',
-    q:`<b>Tin(II) fluoride</b> is the cavity-fighting ingredient in toothpaste. Write its formula, showing every move of the method.`,
+  { type:'chem', level:'Simple', skill:'The four moves',
+    q:`Use the four moves to write the formula for <b>lithium oxide</b>.`,
+    choices:['Li₂O','LiO₂','LiO','Li₂O₂'], answer:0,
     solution:moves(
-      `Sn²⁺ (the (II) tells you) and F⁻.`,
-      `2 and 1.`,
-      `Different, so switch them: the 1 goes to Sn, the 2 goes to F.`,
-      `SnF₂ is already reduced.`
-    )+pill(`SnF₂`)+`One tin ion balanced by two fluorides. Check the toothpaste tube tonight: stannous fluoride is SnF₂.` },
+      `Li⁺ and O²⁻.`,
+      `1 and 2.`,
+      `Different, so switch them: the 2 goes to Li, the 1 goes to O.`,
+      `Li₂O is already reduced.`
+    )+pill(`Li₂O`)+`Two lithiums at 1+ each balance one oxide at 2&minus;. LiO₂ is the switch done backwards: each number goes to the <strong>other</strong> ion.` },
+  { type:'chem', level:'Challenge', skill:'Formula + neutrality check',
+    q:`Write the formula for <b>calcium nitride</b>. Then check it: do the positive and negative charges cancel?`,
+    choices:['Ca₃N₂','Ca₂N₃','CaN','CaN₂'], answer:0,
+    solution:moves(
+      `Ca²⁺ and N³⁻.`,
+      `2 and 3.`,
+      `Different, so switch them: the 3 goes to Ca, the 2 goes to N.`,
+      `2 and 3 share no factor, so Ca₃N₂ is already reduced.`
+    )+pill(`Ca₃N₂`)+`<strong>Neutrality check:</strong> 3 &times; (2+) = 6+ and 2 &times; (3&minus;) = 6&minus;. They cancel. Try it on Ca₂N₃: 4+ against 9&minus;. Not even close.` },
+  { type:'chem', level:'Challenge', skill:'Roman numerals + reduce',
+    q:`In <b>tin(IV) oxide</b>, what does the (IV) tell you, and what is the formula?`,
+    choices:['Tin is 4+ here; SnO₂','Tin is 4+ here; Sn₂O₄','There are four oxides; SnO₄','There are four tin atoms; Sn₄O'], answer:0,
+    solution:`The Roman numeral is <strong>the charge on the metal ion</strong>, not a count of anything. Tin(IV) means Sn⁴⁺.`+moves(
+      `Sn⁴⁺ and O²⁻.`,
+      `4 and 2.`,
+      `Different, so switch them: Sn₂O₄.`,
+      `Both subscripts divide by 2, so <strong>reduce</strong> to SnO₂.`
+    )+pill(`SnO₂`)+`Sn₂O₄ is the right switch with Move 4 skipped.` },
+  { type:'chem', level:'Challenge', skill:'Transition metal formulas',
+    q:`Write the formula for <b>chromium(III) sulfide</b>.`,
+    choices:['Cr₂S₃','Cr₃S₂','CrS','CrS₃'], answer:0,
+    solution:moves(
+      `The (III) tells you Cr³⁺; sulfide is S²⁻.`,
+      `3 and 2.`,
+      `Different, so switch them: the 2 goes to Cr, the 3 goes to S.`,
+      `2 and 3 share no factor, so Cr₂S₃ is already reduced.`
+    )+pill(`Cr₂S₃`)+`<strong>Neutrality check:</strong> 2 &times; (3+) = 6+ and 3 &times; (2&minus;) = 6&minus;. Cr₃S₂ is the switch done backwards.` },
 ];
 const CHEM_S3 = [
-  { type:'chem', level:'Simple', skill:'Polyatomic ions',
-    q:`<b>Potassium permanganate</b> is the deep purple crystal used to disinfect water. Write its formula, showing every move, and explain why the polyatomic ion in it does NOT get parentheses.`,
-    solution:moves(
-      `K⁺ and the permanganate ion, MnO₄⁻.`,
-      `1 and 1.`,
-      `Same number, so drop them.`,
-      `One K, one MnO₄, nothing to reduce.`
-    )+pill(`KMnO₄`)+`Parentheses exist to show that a subscript multiplies a <strong>whole polyatomic group</strong>. You only need them when the count is 2 or more. Here there is exactly one permanganate, so parentheses would have nothing to do.` },
   { type:'chem', level:'Challenge', skill:'The parentheses rule',
-    q:`Write the formulas for <b>potassium acetate</b> and <b>calcium acetate</b>, showing the moves for each. Both compounds contain the exact same polyatomic ion, but only one formula needs parentheses. Explain the rule that decides it.`,
-    solution:`<div class="moves-title">Potassium acetate</div>`+moves(
-      `K⁺ and acetate, C₂H₃O₂⁻.`,
-      `1 and 1.`,
-      `Same number, so drop them.`,
-      `One K, one acetate, nothing to reduce.`
-    )+pill(`KC₂H₃O₂`)+`<div class="moves-title">Calcium acetate</div>`+moves(
-      `Ca²⁺ and acetate, C₂H₃O₂⁻.`,
+    q:`Write the formula for <b>calcium acetate</b>. (Acetate is C₂H₃O₂⁻.)`,
+    choices:['Ca(C₂H₃O₂)₂','CaC₂H₃O₂₂','Ca₂C₂H₃O₂','CaC₂H₃O₂'], answer:0,
+    solution:moves(
+      `Ca²⁺ and acetate, C₂H₃O₂⁻, kept whole.`,
       `2 and 1.`,
       `Different, so switch them: the 1 goes to Ca, the 2 goes to acetate.`,
       `Ca(C₂H₃O₂)₂ is already reduced.`
-    )+pill(`Ca(C₂H₃O₂)₂`)+`The rule: <strong>parentheses wrap a polyatomic ion only when you need more than one of it</strong>, so the subscript outside clearly multiplies the whole group instead of just the last atom. One acetate in KC₂H₃O₂ needs none; two acetates in calcium acetate must be wrapped.` },
+    )+pill(`Ca(C₂H₃O₂)₂`)+`Two acetates, so the whole group gets <strong>parentheses</strong> with the 2 outside. Without them, CaC₂H₃O₂₂ would read as 22 oxygens. Potassium acetate, with just one acetate, stays bare: KC₂H₃O₂.` },
   { type:'chem', level:'Simple', skill:'The parentheses decision',
-    q:`<b>Aluminum hydroxide</b> is the active ingredient in many antacids. Write its formula, showing every move, including the parentheses decision.`,
+    q:`<b>Aluminum hydroxide</b> is the active ingredient in many antacids. What is its formula?`,
+    choices:['Al(OH)₃','AlOH₃','Al₃OH','Al₃(OH)'], answer:0,
     solution:moves(
-      `Al³⁺ and hydroxide, OH⁻.`,
+      `Al³⁺ and hydroxide, OH⁻, kept whole.`,
       `3 and 1.`,
       `Different, so switch them: the 1 goes to Al, the 3 goes to OH.`,
       `Al(OH)₃ is already reduced.`
-    )+pill(`Al(OH)₃`)+`Three hydroxides is more than one, so the group gets <strong>parentheses</strong>. Without them, AlOH₃ would wrongly read as one oxygen and three hydrogens instead of three whole OH groups.` },
+    )+pill(`Al(OH)₃`)+`Three hydroxides is more than one, so the group gets <strong>parentheses</strong>. AlOH₃ would wrongly read as one oxygen and three hydrogens instead of three whole OH groups.` },
+  { type:'chem', level:'Challenge', skill:'Two polyatomic ions',
+    q:`In <b>ammonium phosphate</b>, BOTH ions are polyatomic: ammonium is NH₄⁺ and phosphate is PO₄³⁻. What is the formula?`,
+    choices:['(NH₄)₃PO₄','NH₄PO₄','NH₄(PO₄)₃','NH₄₃PO₄'], answer:0,
+    solution:moves(
+      `NH₄⁺ and PO₄³⁻. Keep both whole.`,
+      `1 and 3.`,
+      `Different, so switch them: the 3 goes to NH₄, the 1 goes to PO₄.`,
+      `3 and 1 share no factor, so (NH₄)₃PO₄ is already reduced.`
+    )+pill(`(NH₄)₃PO₄`)+`Make the parentheses decision one ion at a time: three ammoniums, so <strong>wrap it</strong>; one phosphate, so it <strong>stays bare</strong>. NH₄(PO₄)₃ is the switch done backwards.` },
   { type:'chem', level:'Challenge', skill:'Everything at once',
-    q:`<b>Iron(III) sulfate</b> throws everything from this cycle at you at once: a transition metal, a polyatomic ion, and a parentheses decision. Write the formula, showing every move, run the neutrality check, and then explain which three separate skills from the app you just used in one problem.`,
+    q:`<b>Iron(III) sulfate</b> throws a transition metal, a polyatomic ion, and a parentheses decision at you at once. What is the formula?`,
+    choices:['Fe₂(SO₄)₃','Fe₃(SO₄)₂','FeSO₄','Fe₂SO₄₃'], answer:0,
     solution:moves(
       `The (III) tells you Fe³⁺; sulfate is SO₄²⁻.`,
       `3 and 2.`,
       `Different, so switch them: the 2 goes to Fe, the 3 goes to SO₄. Three sulfates, so parentheses are required.`,
       `Fe₂(SO₄)₃ is already reduced.`
-    )+pill(`Fe₂(SO₄)₃`)+`<strong>Neutrality check:</strong> 2 &times; (3+) = 6+ and 3 &times; (2&minus;) = 6&minus;. They cancel exactly. The three skills stacked in this one problem: reading a <strong>Roman numeral</strong> as the metal's charge, treating a <strong>polyatomic ion</strong> as one sealed unit with its own charge, and making the <strong>parentheses decision</strong> once the count passed 1.` },
-  { type:'chem', level:'Simple', skill:'Spot the mistakes',
-    q:`A classmate writes <b>copper(II) sulfate</b> as Cu₂(SO₄)₂. Find both mistakes hiding in that formula and write the correct one.`,
+    )+pill(`Fe₂(SO₄)₃`)+`<strong>Neutrality check:</strong> 2 &times; (3+) = 6+ and 3 &times; (2&minus;) = 6&minus;. FeSO₄ is what you would get from iron(II), a different compound.` },
+  { type:'chem', level:'Challenge', skill:'Ionic compound matrix',
+    q:`Four formulas copied off the ionic compound matrix. <b>Three are right. Which one is wrong?</b>`,
+    choices:['Ca₂(PO₄)₃','Mg₃N₂','Na₃PO₄','Al(NO₃)₃'], answer:0,
     solution:moves(
-      `Cu²⁺ (that is what the (II) says) and sulfate, SO₄²⁻.`,
-      `2 and 2.`,
-      `Same number, so drop them.`,
-      `One Cu, one SO₄, nothing to reduce.`
-    )+pill(`CuSO₄`)+`<strong>Mistake one:</strong> the classmate switched equal numbers instead of dropping them, so both subscripts came out doubled, and Cu₂(SO₄)₂ is not in lowest terms. <strong>Mistake two:</strong> once the sulfate count drops to 1, the parentheses have no job; they only appear when 2 or more of a polyatomic group are needed.` },
+      `Ca²⁺ and phosphate, PO₄³⁻.`,
+      `2 and 3.`,
+      `Different, so switch them: the 3 goes to Ca, the 2 goes to PO₄.`,
+      `Ca₃(PO₄)₂ is already reduced.`
+    )+pill(`Ca₃(PO₄)₂`)+`Ca₂(PO₄)₃ is the switch done backwards: 4+ against 9&minus;. The other three check out: Mg₃N₂ is 6+ and 6&minus;, Na₃PO₄ is 3+ and 3&minus;, Al(NO₃)₃ is 3+ and 3&minus;.` },
 ];
 
-const TRIVIA_S1 = [
-  {type:'trivia',category:'POP CULTURE',q:`Fresh off sweeping five Grammys for "Not Like Us," who headlined the Super Bowl LIX halftime show in February 2025?`,choices:['Kendrick Lamar','Usher','Rihanna','Post Malone'],answer:0,explanation:`<strong>Kendrick Lamar</strong> headlined in New Orleans, with SZA as his guest. That same month "Not Like Us" won five Grammys, including both Record and Song of the Year.`},
-  {type:'trivia',category:'SPORTS',q:`The men's 100 m final at the 2024 Paris Olympics was the closest in Olympic history, with gold decided by five thousandths of a second. Who won?`,choices:['Noah Lyles','Kishane Thompson','Fred Kerley','Marcell Jacobs'],answer:0,explanation:`<strong>Noah Lyles</strong> (USA) edged Jamaica's Kishane Thompson, 9.784 to 9.789, so close the winner was only visible on the photo finish. It was the first US men's 100 m gold since 2004.`},
-  {type:'trivia',category:'INTERNET & SLANG',q:`Oxford's 2024 Word of the Year names the mental fog you get from scrolling endless low-quality content. What is the term?`,choices:['Brain rot','Doomscrolling','Slop','Demure'],answer:0,explanation:`<strong>Brain rot.</strong> The term is older than the internet: Henry David Thoreau used it in Walden in 1854 to complain that society undervalues complex ideas. "Demure" was among the finalists.`},
-  {type:'trivia',category:'MUSIC',q:`At the 2025 Grammys, Beyoncé finally won Album of the Year on her fifth nomination in the category. Which album did it?`,choices:['Cowboy Carter','Renaissance','Lemonade','4'],answer:0,explanation:`<strong>Cowboy Carter</strong>, her genre-flipping country album, which also won Best Country Album. The night pushed her career total to 35 Grammys, the most of any artist in history.`},
-  {type:'trivia',category:'FILM & TV',q:`The highest-grossing movie of 2024 worldwide was a Pixar sequel about emotions navigating the teenage years. Which film?`,choices:['Inside Out 2','Moana 2','Deadpool & Wolverine','Despicable Me 4'],answer:0,explanation:`<strong>Inside Out 2</strong> earned about $1.7 billion, Pixar's biggest film ever, powered by the new emotion Anxiety. Deadpool &amp; Wolverine finished second.`},
+/* Name That Face. s = the sliver [x, y, zoom], r = the reveal framing [x, y, zoom].
+   x/y are the focus point as a fraction of the photo; zoom is relative to a
+   "cover" fit. Photos are public domain or CC licensed from Wikimedia Commons. */
+const FACES_S1 = [
+  { type:'face', img:'einstein', w:727, h:900, name:'Albert Einstein', dates:'1879-1955', who:'Physicist',
+    prompt:`This mustache has hung on more dorm-room walls than any other. Whose is it?`, s:[0.56,0.47,3], r:[0.5,0.45,1],
+    fact:`When he died in 1955, the pathologist doing his autopsy took his brain home, cut it into about 240 pieces, and kept it in jars for more than 40 years.`, credit:'Oren Jack Turner · Public domain' },
+  { type:'face', img:'swift', w:633, h:900, name:'Taylor Swift', dates:'b. 1989', who:'Singer-songwriter',
+    prompt:`One eye, some bangs, a lot of attitude. Who is it?`, s:[0.6,0.28,3.2], r:[0.58,0.3,1.6],
+    fact:`She grew up on a Christmas tree farm in Pennsylvania. One of her childhood jobs was picking praying mantis egg pods off the trees so they would not hatch in people's living rooms.`, credit:'iHeartRadioCA · CC BY 3.0' },
+  { type:'face', img:'lincoln', w:698, h:900, name:'Abraham Lincoln', dates:'1809-1865', who:'16th US President',
+    prompt:`A beard with no mustache and a very serious chin. Who is it?`, s:[0.48,0.56,2.6], r:[0.5,0.45,1],
+    fact:`He is in the National Wrestling Hall of Fame. As a young man he reportedly lost only one match out of about 300.`, credit:'Alexander Gardner · Public domain' },
+  { type:'face', img:'curry', w:674, h:900, name:'Stephen Curry', dates:'b. 1988', who:'Basketball player',
+    prompt:`These eyes have watched a lot of balls go in from very, very far away. Whose are they?`, s:[0.53,0.19,4], r:[0.52,0.3,2],
+    fact:`He was born in the same hospital in Akron, Ohio, as LeBron James, about three years later.`, credit:'Clément Bardot · CC BY-SA 4.0' },
+  { type:'face', img:'kahlo', w:600, h:900, name:'Frida Kahlo', dates:'1907-1954', who:'Painter',
+    prompt:`The most famous eyebrows in art history. Whose are they?`, s:[0.49,0.255,3], r:[0.5,0.35,1.2],
+    fact:`She kept a pet spider monkey, parrots, and a small deer named Granizo, and painted them into her self-portraits.`, credit:'Guillermo Kahlo · Public domain' },
 ];
-const TRIVIA_S2 = [
-  {type:'trivia',category:'WORLD HISTORY',q:`The Rosetta Stone, found in 1799, cracked an entire ancient writing system because one decree was carved on it in three scripts. Which system did it unlock?`,choices:['Egyptian hieroglyphs','Cuneiform','Linear B','Mayan glyphs'],answer:0,explanation:`<strong>Egyptian hieroglyphs.</strong> The same decree appears in hieroglyphs, Demotic, and ancient Greek, and since scholars could read the Greek, Champollion used it to decipher the hieroglyphs by 1822.`},
-  {type:'trivia',category:'US GOVERNMENT',q:`How many justices sit on the United States Supreme Court?`,choices:['Seven','Nine','Eleven','Thirteen'],answer:1,explanation:`<strong>Nine</strong>, one chief justice and eight associate justices. The Constitution never sets the number; Congress fixed it at nine in 1869 and it has not changed since.`},
-  {type:'trivia',category:'GEOGRAPHY',q:`As of 2024, which country has the largest population on Earth?`,choices:['China','India','United States','Indonesia'],answer:1,explanation:`<strong>India</strong>, at roughly 1.44 billion people, passed China in 2023, the first change at the top in centuries. The United States is a distant third at about 340 million.`},
-  {type:'trivia',category:'WORLD EVENTS',q:`Notre-Dame cathedral in Paris triumphantly reopened in December 2024, five years after what closed it?`,choices:['A massive roof fire','An earthquake','A flood of the Seine','A structural collapse'],answer:0,explanation:`<strong>The April 2019 fire</strong> that destroyed its spire and medieval roof. Roughly 2,000 craftspeople and about &euro;700 million rebuilt it, using oak beams cut with medieval techniques.`},
-  {type:'trivia',category:'ECONOMICS',q:`When economists say a country is experiencing inflation, what exactly is happening?`,choices:['Prices are generally rising, so each dollar buys less','The stock market is falling','Unemployment is going up','The government is printing less money'],answer:0,explanation:`<strong>A general, sustained rise in prices</strong> that shrinks what each dollar buys. It is tracked with the Consumer Price Index, and central banks like the Federal Reserve aim to hold it near 2% a year.`},
+const FACES_S2 = [
+  { type:'face', img:'obama', w:720, h:900, name:'Barack Obama', dates:'b. 1961', who:'44th US President',
+    prompt:`Big ears, bigger grin. Who is it?`, s:[0.56,0.235,3], r:[0.5,0.3,1.3],
+    fact:`He collects Spider-Man and Conan the Barbarian comic books.`, credit:'Pete Souza, White House · Public domain' },
+  { type:'face', img:'monroe', w:612, h:900, name:'Marilyn Monroe', dates:'1926-1962', who:'Actress',
+    prompt:`Red lipstick, 1953, and platinum curls just out of frame. Who is it?`, s:[0.38,0.33,3.5], r:[0.45,0.35,1.3],
+    fact:`Her real name was Norma Jeane Mortenson. The dress she wore to sing "Happy Birthday, Mr. President" sold at auction in 2016 for about $4.8 million.`, credit:'Bert Parry · Public domain' },
+  { type:'face', img:'zendaya', w:598, h:900, name:'Zendaya', dates:'b. 1996', who:'Actress',
+    prompt:`One name. No last name needed. Who is it?`, s:[0.4,0.29,3], r:[0.42,0.33,1.4],
+    fact:`In 2022, at 26, she became the youngest person ever to win the Emmy for Lead Actress in a Drama twice, both for Euphoria.`, credit:'PhilipRomano · CC BY-SA 4.0' },
+  { type:'face', img:'mlk', w:609, h:900, name:'Martin Luther King Jr.', dates:'1929-1968', who:'Civil rights leader',
+    prompt:`This mustache belongs to a voice that changed a country. Whose is it?`, s:[0.42,0.53,3], r:[0.5,0.45,1],
+    fact:`One of the greatest speakers in American history got a C in public speaking during his first year of seminary.`, credit:'Associated Press · Public domain' },
+  { type:'face', img:'reeves', w:675, h:900, name:'Keanu Reeves', dates:'b. 1964', who:'Actor',
+    prompt:`Is this a hacker who dodges bullets, or a hitman who really, really loves his dog? Name the face.`, s:[0.49,0.36,3], r:[0.5,0.42,1],
+    fact:`His first name comes from Hawaiian and is often translated as "cool breeze over the mountains."`, credit:'Gabriel Hutchinson · CC BY-SA 4.0' },
 ];
-const TRIVIA_S3 = [
-  {type:'trivia',category:'LITERATURE',q:`"To be, or not to be" opens the most famous soliloquy in English drama. Which Shakespeare play is it from?`,choices:['Macbeth','Hamlet','Romeo and Juliet','Othello'],answer:1,explanation:`<strong>Hamlet.</strong> The Prince of Denmark delivers it in Act 3, weighing existence itself. It is likely the most quoted passage in all of English literature.`},
-  {type:'trivia',category:'SCIENCE',q:`Roughly what fraction of the air you are breathing right now is nitrogen?`,choices:['About 21%','About 50%','About 78%','About 90%'],answer:2,explanation:`<strong>About 78%</strong> is nitrogen; only about 21% is the oxygen you actually use. N₂'s triple bond makes it so unreactive that it mostly just rides along in every breath.`},
-  {type:'trivia',category:'SPACE',q:`After a 2023 discovery haul of 62 new moons, which planet now has the most confirmed moons in our solar system?`,choices:['Jupiter','Saturn','Uranus','Neptune'],answer:1,explanation:`<strong>Saturn</strong>, with over 140 confirmed moons after the 2023 announcements pushed it past Jupiter. Most are tiny captured chunks only a few kilometers across.`},
-  {type:'trivia',category:'LIFE SKILLS',q:`Your credit score is a three-digit number lenders check before giving you a loan. What does it primarily measure?`,choices:['How much money you earn','How reliably you have repaid borrowed money','How much you keep in savings','How many bank accounts you have'],answer:1,explanation:`<strong>How reliably you repay what you borrow</strong>. Payment history and amounts owed drive most of it. Your income and savings are not even part of the formula. Scores run 300 to 850.`},
-  {type:'trivia',category:'ART & CULTURE',q:`Swirling blues, a flame-like cypress tree, and a village under a wild night sky, painted from an asylum window in 1889. Name the painting and the artist.`,choices:['The Scream, Edvard Munch','The Starry Night, Vincent van Gogh','Impression, Sunrise, Claude Monet','Water Lilies, Claude Monet'],answer:1,explanation:`<strong>The Starry Night, by Vincent van Gogh</strong>, painted at the Saint-Rémy asylum in June 1889. He considered it a failed study; it has hung in New York's MoMA since 1941.`},
+const FACES_S3 = [
+  { type:'face', img:'johnson', w:720, h:900, name:'Dwayne "The Rock" Johnson', dates:'b. 1972', who:'Actor and former wrestler',
+    prompt:`Somewhere above these glasses is the most famous eyebrow in Hollywood. Whose?`, s:[0.5,0.24,3], r:[0.5,0.4,1],
+    fact:`When he was cut from the Canadian Football League in 1995, he had $7 in his pocket. His production company is named Seven Bucks Productions.`, credit:'Harald Krichel · CC BY-SA 4.0' },
+  { type:'face', img:'kobe', w:900, h:858, name:'Kobe Bryant', dates:'1978-2020', who:'Basketball player',
+    prompt:`Washington, 2014. The rest of this person was wearing purple and gold. Who is it?`, s:[0.67,0.19,4.5], r:[0.62,0.35,1.6],
+    fact:`His parents named him after Kobe beef, which they spotted on a restaurant menu.`, credit:'Keith Allison · CC BY-SA 2.0' },
+  { type:'face', img:'curie', w:662, h:900, name:'Marie Curie', dates:'1867-1934', who:'Chemist and physicist',
+    prompt:`Your chemistry teacher will be very disappointed if nobody gets this one.`, s:[0.45,0.35,3], r:[0.5,0.4,1],
+    fact:`Her notebooks are still radioactive a century later. They are stored in lead-lined boxes, and anyone who wants to read them has to sign a waiver and wear protective gear.`, credit:'Henri Manuel · Public domain' },
+  { type:'face', img:'biles', w:623, h:900, name:'Simone Biles', dates:'b. 1997', who:'Gymnast',
+    prompt:`This smile has flipped, twisted, and landed harder things than any smile on Earth. Whose is it?`, s:[0.53,0.53,3], r:[0.5,0.38,1.2],
+    fact:`Five gymnastics skills are officially named after her, and some are so hard that almost nobody else in the world even tries them.`, credit:'Ocoudis · CC BY-SA 4.0' },
+  { type:'face', img:'brucelee', w:721, h:900, name:'Bruce Lee', dates:'1940-1973', who:'Martial artist and actor',
+    prompt:`This face could kick you before you finish reading this sentence. Who is it?`, s:[0.44,0.25,3.5], r:[0.45,0.4,1],
+    fact:`Before he was a martial arts legend, he won the 1958 Hong Kong cha-cha dance championship.`, credit:'National General Pictures · Public domain' },
 ];
 
-// interleave chem/trivia -> 10 items per round, starting with chem
-function interleave(chem,trivia){
-  const out=[]; for(let i=0;i<5;i++){ out.push(chem[i]); out.push(trivia[i]); } return out;
+// interleave chem/face -> 10 items per round, starting with chem
+function interleave(chem,faces){
+  const out=[]; for(let i=0;i<5;i++){ out.push(chem[i]); out.push(faces[i]); } return out;
 }
 const SECTIONS = [
-  { title:'Round 1 · Give & Take', short:'IONIC BONDS · IONS', desc:'Electron transfer, cations and anions, and why ionic compounds behave the way they do.', items:interleave(CHEM_S1,TRIVIA_S1) },
-  { title:'Round 2 · Drop or Switch', short:'THE FOUR MOVES · ROMAN NUMERALS', desc:'Drop or switch the numbers for binary formulas, plus transition metals that need a Roman numeral.', items:interleave(CHEM_S2,TRIVIA_S2) },
-  { title:'Round 3 · The Full Stack', short:'POLYATOMIC IONS · PARENTHESES', desc:'Polyatomic ions, the parentheses decision, and problems that use everything at once.', items:interleave(CHEM_S3,TRIVIA_S3) },
+  { title:'Round 1 · Give & Take', short:'IONIC BONDS · IONS', desc:'Predicting charges, electron transfer, and why ionic compounds conduct.', items:interleave(CHEM_S1,FACES_S1) },
+  { title:'Round 2 · Drop or Switch', short:'THE FOUR MOVES · ROMAN NUMERALS', desc:'Drop or switch the numbers for binary formulas, plus transition metals that need a Roman numeral.', items:interleave(CHEM_S2,FACES_S2) },
+  { title:'Round 3 · The Full Stack', short:'POLYATOMIC IONS · PARENTHESES', desc:'Polyatomic ions, the parentheses decision, and problems that use everything at once.', items:interleave(CHEM_S3,FACES_S3) },
 ];
 
 /* =========================================================================
@@ -618,7 +673,7 @@ function resetScores(){ if(!confirm('Reset all team scores to zero? (Names stay.
    NAVIGATION + PLAY FLOW
    ========================================================================= */
 let curSection=0, curIndex=0;
-let curChoices=[], curAnswer=0;   // shuffled trivia choices for the item on screen
+let curChoices=[], curAnswer=0;   // shuffled chem choices for the item on screen
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function renderMenu(){
   const c=document.getElementById('section-cards');
@@ -630,7 +685,7 @@ function renderMenu(){
         <div class="desc">${s.desc}</div>
       </div>
       <div class="foot">
-        <div class="meta"><span>5 CHEM</span><span>5 WILDCARD</span><span>${s.short.split('·')[0].trim()}</span></div>
+        <div class="meta"><span>5 CHEM</span><span>5 FACES</span><span>${s.short.split('·')[0].trim()}</span></div>
         <button class="go">Start Round ${i+1}</button>
       </div>
     </div>`).join('');
@@ -640,6 +695,36 @@ function goMenu(){ stopTimer(); showView('menu-view'); }
 function startSection(i){ curSection=i; curIndex=0; showView('play-view'); renderQuestion(); }
 
 function currentItem(){ return SECTIONS[curSection].items[curIndex]; }
+
+// chem and faces keep their own timer length (faces default to 0:30)
+const timerPref={chem:'120',face:'30'};
+function rememberLen(){ const d=currentItem(); if(d) timerPref[d.type]=document.getElementById('timer-len').value; }
+
+// frame a photo inside a box: focus point (fx,fy) as fractions, zoom over a "cover" fit
+function framePhoto(el,f,view){
+  const [fx,fy,z]=view, cw=el.clientWidth, ch=el.clientHeight;
+  const sc=Math.max(cw/f.w,ch/f.h)*z, iw=f.w*sc, ih=f.h*sc;
+  const l=Math.min(0,Math.max(cw-iw,cw/2-fx*iw)), t=Math.min(0,Math.max(ch-ih,ch/2-fy*ih));
+  el.style.backgroundImage=`url(faces/${f.img}.jpg)`;
+  el.style.backgroundSize=`${iw}px ${ih}px`;
+  el.style.backgroundPosition=`${l}px ${t}px`;
+}
+let widenStep=0;
+function sliverView(d){ const z=Math.max(1,d.s[2]/Math.pow(1.7,widenStep)); return [d.s[0],d.s[1],z]; }
+function widenSliver(){
+  widenStep++;
+  const d=currentItem(), el=document.getElementById('sliver');
+  el.classList.add('animate');
+  framePhoto(el,d,sliverView(d));
+  if(widenStep>=2) document.getElementById('widen-btn').disabled=true;
+}
+window.addEventListener('resize',()=>{
+  const d=currentItem(); if(!d||d.type!=='face') return;
+  const sl=document.getElementById('sliver'), pt=document.getElementById('portrait');
+  if(sl&&sl.offsetParent) framePhoto(sl,d,sliverView(d));
+  if(pt&&pt.offsetParent) framePhoto(pt,d,d.r);
+});
+
 function renderQuestion(){
   const s=SECTIONS[curSection], d=currentItem();
   document.getElementById('play-title').firstChild.textContent=s.title.split('·')[1].trim()+' ';
@@ -651,25 +736,29 @@ function renderQuestion(){
   qs.style.display=''; qc.style.display='flex';
 
   if(d.type==='chem'){
-    qs.innerHTML=`<div class="card">
+    // shuffle choices so the correct answer lands in a random A-D slot each time
+    const order=shuffle(d.choices.map((_,i)=>i));
+    curChoices=order.map(i=>d.choices[i]);
+    curAnswer=order.indexOf(d.answer);
+    qs.innerHTML=`<div class="card chem-mc">
       <div class="q-badges"><span class="lvl ${d.level==='Simple'?'simple':'challenge'}">${d.level.toUpperCase()}</span><span class="skill-tag">${d.skill}</span></div>
       <div class="q-text chem">${d.q}</div>
-      <div class="whiteboard-hint"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Work it out on your whiteboard as a team. Reveal when the clock runs out.</span></div>
+      <div class="choices">${curChoices.map((c,i)=>`<div class="choice"><div class="ltr">${'ABCD'[i]}</div><div>${c}</div></div>`).join('')}</div>
+      <div class="whiteboard-hint"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Work it out on your whiteboard, then lock in a letter as a team.</span></div>
     </div>`;
     qc.innerHTML=`<button class="btn btn-reveal" onclick="reveal()">Reveal the Answer</button>`;
   } else {
-    // shuffle choices so the correct answer lands in a random A-D slot each time
-    const order = shuffle([0,1,2,3]);
-    curChoices = order.map(i=>d.choices[i]);
-    curAnswer = order.indexOf(d.answer);
-    qs.innerHTML=`<div class="card trivia">
-      <div class="brain-break">Wildcard · Brain Break</div>
-      <span class="trivia-cat">${d.category}</span>
-      <div class="q-text">${d.q}</div>
-      <div class="choices">${curChoices.map((c,i)=>`<div class="choice"><div class="ltr">${'ABCD'[i]}</div><div>${c}</div></div>`).join('')}</div>
+    widenStep=0;
+    qs.innerHTML=`<div class="card face">
+      <div class="brain-break">Name That Face</div>
+      <div class="q-text">${d.prompt}</div>
+      <div class="sliver" id="sliver" role="img" aria-label="A small sliver of a famous face"></div>
+      <div class="face-tools"><span class="hint">Write your guess down as a team.</span><button class="widen" id="widen-btn" onclick="widenSliver()">Widen the sliver</button></div>
     </div>`;
-    qc.innerHTML=`<button class="btn btn-reveal" style="background:var(--amber);color:#fff" onclick="reveal()">Reveal the Answer</button>`;
+    framePhoto(document.getElementById('sliver'),d,sliverView(d));
+    qc.innerHTML=`<button class="btn btn-reveal" style="background:var(--amber);color:#fff" onclick="reveal()">Show the Whole Face</button>`;
   }
+  document.getElementById('timer-len').value=timerPref[d.type];
   resetTimer();
 }
 function reveal(){
@@ -678,20 +767,28 @@ function reveal(){
   const rs=document.getElementById('reveal-stage');
   document.getElementById('q-controls').style.display='none';
   if(d.type==='chem'){
+    document.querySelectorAll('#q-stage .choice').forEach((c,i)=>{ if(i===curAnswer) c.classList.add('correct'); });
     let vis='';
     if(d.transfer) vis=`<div class="visual">${transferSVG(d.transfer.donor,d.transfer.acceptor,d.transfer.label)}</div>`;
     else if(d.ions) vis=`<div class="visual">${ionCards(d.ions)}</div>`;
     rs.innerHTML=`<div class="reveal">
-      <div class="reveal-head"><div class="chk">&#10003;</div><h3>Worked Answer</h3></div>
+      <div class="reveal-head"><div class="chk">&#10003;</div><h3>${'ABCD'[curAnswer]} &middot; ${curChoices[curAnswer]}</h3></div>
       ${vis}<div class="sol">${d.solution}</div></div>`;
   } else {
-    const qs=document.getElementById('q-stage');
-    qs.querySelectorAll('.choice').forEach((c,i)=>{ if(i===curAnswer) c.classList.add('correct'); });
-    rs.innerHTML=`<div class="reveal trivia-rev">
-      <div class="reveal-head"><div class="chk">&#10003;</div><h3>${'ABCD'[curAnswer]} &middot; ${curChoices[curAnswer]}</h3></div>
-      <div class="sol">${d.explanation}</div></div>`;
+    // the next slide: the whole face replaces the sliver
+    document.getElementById('q-stage').style.display='none';
+    rs.innerHTML=`<div class="face-reveal">
+      <div class="portrait" id="portrait" role="img" aria-label="${esc(d.name)}"></div>
+      <div>
+        <div class="brain-break">Name That Face</div>
+        <div class="face-name">${d.name}</div>
+        <div class="face-meta">${d.who} &middot; ${d.dates}</div>
+        <div class="face-fact"><b>Strange but true</b>${d.fact}</div>
+        <div class="face-credit">Photo: ${d.credit} &middot; Wikimedia Commons</div>
+      </div></div>`;
   }
   rs.style.display='';
+  if(d.type==='face') framePhoto(document.getElementById('portrait'),d,d.r);
   const rc=document.getElementById('reveal-controls'); rc.style.display='flex';
   document.getElementById('next-btn').textContent=(curIndex>=9)?'Finish Round →':'Next →';
   rs.scrollIntoView({behavior:'smooth',block:'nearest'});
@@ -701,7 +798,6 @@ function backToQuestion(){
   document.getElementById('reveal-controls').style.display='none';
   document.getElementById('q-stage').style.display='';
   document.getElementById('q-controls').style.display='flex';
-  // un-mark trivia choices
   document.querySelectorAll('#q-stage .choice.correct').forEach(c=>c.classList.remove('correct'));
   startTimer();
 }
