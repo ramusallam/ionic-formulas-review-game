@@ -232,6 +232,16 @@
 </head>
 <body>
 
+<!-- ============ CLOSED (Ramsey opens it in class) ============ -->
+<div id="closed" style="position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,#2A2550 0%,#4F46E5 55%,#6366F1 100%);display:flex;align-items:center;justify-content:center;padding:24px">
+  <div class="gate-card">
+    <div class="gate-badge">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h1 class="serif">Ionic Formulas Review Game</h1>
+    <p style="margin-bottom:0">This game is closed for now. Ramsey will open it in class.</p>
+  </div>
+</div>
 <!-- ============ PASSWORD GATE ============ -->
 <div id="gate" class="hide">
   <div class="gate-card">
@@ -316,10 +326,13 @@
    the game opens.
    ========================================================================= */
 const GATE = {
-  endpoint: 'https://sparklearningstudio.ai/api/review-game',
+  endpoint: 'https://inquiry.sparklearningstudio.ai/api/review-game',
   slug: 'cycle-2-ionic-bonding-ac0c5c',               // chemistry cycle publicSlug
   moduleId: '8522fef8-f5f1-424c-926a-494868b7e842',   // 3b Review module id
 };
+// CLOSED = true shows the closed screen to everyone. Flip to false to open the game.
+const CLOSED = true;
+if(!CLOSED) document.getElementById('closed').remove();
 const UNLOCK_KEY = 'ifrg-unlocked-v1';
 function isUnlocked(){ try{ return localStorage.getItem(UNLOCK_KEY)==='1'; }catch(e){ return false; } }
 function unlock(){
@@ -866,7 +879,7 @@ document.addEventListener('keydown',e=>{
       selectChoice(i); document.querySelector(`[data-choice="${i}"]`)?.focus();
     }
   }
-  if((e.key==='f'||e.key==='F') && document.getElementById('gate').classList.contains('hide')){
+  if(!CLOSED && (e.key==='f'||e.key==='F') && document.getElementById('gate').classList.contains('hide')){
     if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen();
   }
 });
