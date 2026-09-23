@@ -22,6 +22,8 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);line-height:1.55;min-height:100vh;-webkit-font-smoothing:antialiased}
+  button,select,input{font:inherit}
+  button:focus-visible,select:focus-visible,input:focus-visible,.sec-card:focus-visible{outline:3px solid rgba(99,102,241,.38);outline-offset:3px}
   sub{font-size:0.7em} sup{font-size:0.7em}
   .eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--indigo);font-weight:700}
   .serif{font-family:var(--font-serif)}
@@ -127,7 +129,7 @@
   /* timer */
   .timer-row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:14px;font-size:0.8rem;color:var(--warm)}
   .timer-row label{font-weight:600;font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-muted)}
-  .timer-row select,.timer-row button{padding:6px 12px;border:1px solid var(--line);border-radius:8px;font-family:var(--font-sans);font-size:0.8rem;font-weight:600;background:var(--white);color:var(--warm);cursor:pointer}
+  .timer-row select,.timer-row button{min-height:44px;padding:8px 13px;border:1px solid var(--line);border-radius:8px;font-family:var(--font-sans);font-size:0.85rem;font-weight:600;background:var(--white);color:var(--warm);cursor:pointer}
   .timer-bar{height:9px;background:var(--line-soft);border-radius:9px;overflow:hidden;margin-bottom:8px}
   .timer-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--indigo),var(--indigo-2));transition:width .35s linear}
   .timer-fill.warn{background:linear-gradient(90deg,#D6A02E,#E0B44A)}
@@ -152,17 +154,24 @@
   /* multiple choice */
   .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
   @media(max-width:640px){.choices{grid-template-columns:1fr}}
-  .choice{background:var(--cream);border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:13px;font-size:1.02rem;color:var(--ink);transition:all .18s}
+  .choice{width:100%;min-height:68px;background:var(--cream);border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:13px;font-size:1.02rem;color:var(--ink);text-align:left;cursor:pointer;transition:background .18s,border-color .18s,box-shadow .18s,transform .18s}
+  .choice:hover{background:#f4f0e8;border-color:var(--indigo-line);transform:translateY(-1px)}
+  .choice.selected{background:var(--indigo-soft);border:2px solid var(--indigo);box-shadow:0 0 0 2px rgba(99,102,241,.08);padding:15.5px 17.5px}
+  .choice.selected .ltr{background:var(--indigo)}
+  .choice.wrong{background:#fff1ef;border-color:#d6603e}
+  .choice.wrong .ltr{background:#c24a32}
+  .choice:disabled{cursor:default;transform:none}
   .choice .ltr{width:34px;height:34px;border-radius:50%;background:var(--amber);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.95rem;flex-shrink:0;font-family:var(--font-mono)}
   .choice.correct{background:#EEF6E9;border-color:var(--green)}
   .choice.correct .ltr{background:var(--green)}
-  .choice.correct::after{content:'\2713';margin-left:auto;color:var(--green);font-weight:800;font-size:1.1rem}
+  .choice.correct::after{content:'Correct';margin-left:auto;color:var(--green);font:700 10px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase}
 
   /* reveal */
   .reveal{background:var(--white);border:1px solid var(--line);border-left:5px solid var(--indigo);border-radius:14px;box-shadow:var(--sh-sm);padding:26px 28px;margin-bottom:18px;animation:fadeUp .35s ease-out}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .reveal-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
   .reveal-head .chk{width:28px;height:28px;border-radius:50%;background:var(--indigo);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+  .reveal-head .chk svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
   .reveal-head h3{font-family:var(--font-serif);font-size:1.12rem;color:var(--ink)}
   .sol{font-size:1rem;color:var(--ink);line-height:1.7}
   .sol strong{color:var(--indigo);font-weight:700}
@@ -218,6 +227,7 @@
   .face-fact b{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
   .face-credit{margin-top:12px;font-size:0.7rem;color:var(--warm-muted)}
   .app-foot{text-align:center;padding:26px 20px 40px;color:var(--warm-muted);font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.1em}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
@@ -580,7 +590,7 @@ const FACES_S1 = [
 ];
 const FACES_S2 = [
   { type:'face', img:'obama', w:720, h:900, name:'Barack Obama', dates:'b. 1961', who:'44th US President',
-    prompt:`Big ears, bigger grin. Who is it?`, s:[0.56,0.235,3], r:[0.5,0.3,1.3],
+    prompt:`A familiar White House smile. Who is it?`, s:[0.56,0.235,3], r:[0.5,0.3,1.3],
     fact:`He collects Spider-Man and Conan the Barbarian comic books.`, credit:'Pete Souza, White House · Public domain' },
   { type:'face', img:'monroe', w:612, h:900, name:'Marilyn Monroe', dates:'1926-1962', who:'Actress',
     prompt:`Red lipstick, 1953, and platinum curls just out of frame. Who is it?`, s:[0.38,0.33,3.5], r:[0.45,0.35,1.3],
@@ -603,7 +613,7 @@ const FACES_S3 = [
     prompt:`Washington, 2014. The rest of this person was wearing purple and gold. Who is it?`, s:[0.67,0.19,4.5], r:[0.62,0.35,1.6],
     fact:`His parents named him after Kobe beef, which they spotted on a restaurant menu.`, credit:'Keith Allison · CC BY-SA 2.0' },
   { type:'face', img:'curie', w:662, h:900, name:'Marie Curie', dates:'1867-1934', who:'Chemist and physicist',
-    prompt:`Your chemistry teacher will be very disappointed if nobody gets this one.`, s:[0.45,0.35,3], r:[0.5,0.4,1],
+    prompt:`A chemistry legend and two-time Nobel laureate. Who is it?`, s:[0.45,0.35,3], r:[0.5,0.4,1],
     fact:`Her notebooks are still radioactive a century later. They are stored in lead-lined boxes, and anyone who wants to read them has to sign a waiver and wear protective gear.`, credit:'Henri Manuel · Public domain' },
   { type:'face', img:'biles', w:623, h:900, name:'Simone Biles', dates:'b. 1997', who:'Gymnast',
     prompt:`This smile has flipped, twisted, and landed harder things than any smile on Earth. Whose is it?`, s:[0.53,0.53,3], r:[0.5,0.38,1.2],
@@ -646,7 +656,7 @@ function scoreboardHTML(){
     const lead=t.score>0&&t.score===max;
     h+='<div class="team'+(lead?' leader':'')+'">';
     h+='<span class="team-lead-chip">LEAD</span>';
-    h+='<input class="team-name" value="'+esc(t.name)+'" onchange="renameTeam('+i+',this.value)" onfocus="this.select()">';
+    h+='<input class="team-name" aria-label="Team '+(i+1)+' name" value="'+esc(t.name)+'" oninput="renameTeam('+i+',this.value)" onfocus="this.select()">';
     h+='<div class="team-score">'+t.score+'</div>';
     h+='<div class="team-btns"><button class="t-minus" onclick="subPt('+i+')" aria-label="Subtract a point">'+SB_ICON_MINUS+'</button><button class="t-plus" onclick="addPt('+i+')" aria-label="Add a point">'+SB_ICON_PLUS+'</button></div>';
     h+='</div>';
@@ -673,7 +683,7 @@ function resetScores(){ if(!confirm('Reset all team scores to zero? (Names stay.
    NAVIGATION + PLAY FLOW
    ========================================================================= */
 let curSection=0, curIndex=0;
-let curChoices=[], curAnswer=0;   // shuffled chem choices for the item on screen
+let curChoices=[], curAnswer=0, selectedChoice=-1;   // shuffled chem choices for the item on screen
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function renderMenu(){
   const c=document.getElementById('section-cards');
@@ -736,6 +746,7 @@ function renderQuestion(){
   qs.style.display=''; qc.style.display='flex';
 
   if(d.type==='chem'){
+    selectedChoice=-1;
     // shuffle choices so the correct answer lands in a random A-D slot each time
     const order=shuffle(d.choices.map((_,i)=>i));
     curChoices=order.map(i=>d.choices[i]);
@@ -743,8 +754,8 @@ function renderQuestion(){
     qs.innerHTML=`<div class="card chem-mc">
       <div class="q-badges"><span class="lvl ${d.level==='Simple'?'simple':'challenge'}">${d.level.toUpperCase()}</span><span class="skill-tag">${d.skill}</span></div>
       <div class="q-text chem">${d.q}</div>
-      <div class="choices">${curChoices.map((c,i)=>`<div class="choice"><div class="ltr">${'ABCD'[i]}</div><div>${c}</div></div>`).join('')}</div>
-      <div class="whiteboard-hint"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Work it out on your whiteboard, then lock in a letter as a team.</span></div>
+      <div class="choices" role="group" aria-label="Answer choices">${curChoices.map((c,i)=>`<button class="choice" type="button" aria-pressed="false" data-choice="${i}" onclick="selectChoice(${i})"><span class="ltr">${'ABCD'[i]}</span><span>${c}</span></button>`).join('')}</div>
+      <div class="whiteboard-hint"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Work it out on your whiteboard, then choose one letter as a team.</span></div>
     </div>`;
     qc.innerHTML=`<button class="btn btn-reveal" onclick="reveal()">Reveal the Answer</button>`;
   } else {
@@ -761,18 +772,30 @@ function renderQuestion(){
   document.getElementById('timer-len').value=timerPref[d.type];
   resetTimer();
 }
+function selectChoice(i){
+  selectedChoice=i;
+  document.querySelectorAll('#q-stage .choice').forEach((choice,index)=>{
+    const selected=index===i;
+    choice.classList.toggle('selected',selected);
+    choice.setAttribute('aria-pressed',selected?'true':'false');
+  });
+}
 function reveal(){
   stopTimer();
   const d=currentItem();
   const rs=document.getElementById('reveal-stage');
   document.getElementById('q-controls').style.display='none';
   if(d.type==='chem'){
-    document.querySelectorAll('#q-stage .choice').forEach((c,i)=>{ if(i===curAnswer) c.classList.add('correct'); });
+    document.querySelectorAll('#q-stage .choice').forEach((c,i)=>{
+      c.disabled=true;
+      if(i===curAnswer) c.classList.add('correct');
+      else if(i===selectedChoice) c.classList.add('wrong');
+    });
     let vis='';
     if(d.transfer) vis=`<div class="visual">${transferSVG(d.transfer.donor,d.transfer.acceptor,d.transfer.label)}</div>`;
     else if(d.ions) vis=`<div class="visual">${ionCards(d.ions)}</div>`;
     rs.innerHTML=`<div class="reveal">
-      <div class="reveal-head"><div class="chk">&#10003;</div><h3>${'ABCD'[curAnswer]} &middot; ${curChoices[curAnswer]}</h3></div>
+      <div class="reveal-head"><div class="chk"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><h3>${'ABCD'[curAnswer]} &middot; ${curChoices[curAnswer]}</h3></div>
       ${vis}<div class="sol">${d.solution}</div></div>`;
   } else {
     // the next slide: the whole face replaces the sliver
@@ -798,7 +821,7 @@ function backToQuestion(){
   document.getElementById('reveal-controls').style.display='none';
   document.getElementById('q-stage').style.display='';
   document.getElementById('q-controls').style.display='flex';
-  document.querySelectorAll('#q-stage .choice.correct').forEach(c=>c.classList.remove('correct'));
+  document.querySelectorAll('#q-stage .choice').forEach(c=>{ c.disabled=false; c.classList.remove('correct','wrong'); });
   startTimer();
 }
 function nextQuestion(){ if(curIndex>=9){ goMenu(); return; } curIndex++; renderQuestion(); }
@@ -836,6 +859,13 @@ function updateTimer(){
    INIT
    ========================================================================= */
 document.addEventListener('keydown',e=>{
+  if(document.getElementById('play-view').classList.contains('active') && !['INPUT','SELECT'].includes(document.activeElement.tagName)){
+    const d=currentItem();
+    if(d&&d.type==='chem'&&document.getElementById('q-stage').style.display!=='none'&&/^[1-4a-dA-D]$/.test(e.key)){
+      const i=/^[1-4]$/.test(e.key)?Number(e.key)-1:e.key.toUpperCase().charCodeAt(0)-65;
+      selectChoice(i); document.querySelector(`[data-choice="${i}"]`)?.focus();
+    }
+  }
   if((e.key==='f'||e.key==='F') && document.getElementById('gate').classList.contains('hide')){
     if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen();
   }
