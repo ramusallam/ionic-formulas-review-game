@@ -331,7 +331,7 @@ const GATE = {
   moduleId: '8522fef8-f5f1-424c-926a-494868b7e842',   // 3b Review module id
 };
 // CLOSED = true shows the closed screen to everyone. Flip to false to open the game.
-const CLOSED = true;
+const CLOSED = false;
 if(!CLOSED) document.getElementById('closed').remove();
 const UNLOCK_KEY = 'ifrg-unlocked-v1';
 function isUnlocked(){ try{ return localStorage.getItem(UNLOCK_KEY)==='1'; }catch(e){ return false; } }
